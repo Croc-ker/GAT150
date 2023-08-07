@@ -34,7 +34,7 @@ void Player::Update(float dt)
 		{
 		case WeaponType::Type::NormalShot:
 			{
-				kiko::Transform transform{ m_transform.position, m_transform.rotation + kiko::DegreesToRadians(0.0f), 3.0f };
+				kiko::Transform transform{ m_transform.position, m_transform.rotation + kiko::DegreesToRadians(0.0), 3.0 };
 				std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(50.0f, transform, kiko::g_manager.Get("Weapon.txt"));
 				weapon->m_tag = "PlayerBullet";
 				m_scene->Add(std::move(weapon));

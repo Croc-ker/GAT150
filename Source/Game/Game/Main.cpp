@@ -6,6 +6,7 @@
 #include "../../Audio/AudioSystem.h"
 #include "Core/Time.h"
 #include "Framework/Scene.h"
+#include "Framework/Resource/ResourceManager.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Renderer/Text.h"
@@ -14,6 +15,7 @@
 #include <chrono>
 #include <vector>
 #include <thread>
+#include <Core/Logger.h>
 
 
 using namespace std;
@@ -47,9 +49,68 @@ public:
 	kiko::vec2 m_vel;
 };
 
+template <typename T>
+void print(const std::string& s, const T& container)
+{
+	std::cout << s << std::endl;
+	for (auto element : container)
+	{
+		std::cout << element << " ";
+	}
+	std::cout << std::endl;
+}
+
+void print(int count, ...)
+{
+	va_list args;
+
+	va_start(args, count);
+	for (int i = 0; i < count; ++i)
+	{
+		std::cout << va_arg(args, const char*) << std::endl;
+	}
+	va_end(args);
+}
 
 int main(int argc, char* argv[])
 {
+
+	//print(arg, "hello", "world", "goodbye");
+
+	int n[4] = { 1, 2, 3, 4 };
+	print("array: ", n);
+	cout << n << endl;
+	cout << *(n+3) << endl;
+
+	std::array<int, 4> na = { 1, 2, 3, 4 };
+	print("array class: ", na);
+	cout << na.front() << endl;
+	cout << na.back() << endl;
+	cout << na.max_size() << endl;
+
+
+	std::vector<int> nv = { 1, 2, 3, 4 };
+	print("vector: ", nv);
+	nv.insert(nv.begin() + 2, 0);
+	nv.push_back(5);
+	nv.pop_back();
+	auto iter = nv.erase(nv.begin(), nv.end());
+	print("vector: ", nv);
+
+	std::list<int> nl = { 1, 2, 3, 4 };
+	print("list: ", nl);
+	nl.push_front(0);
+	print("list: ", nl);
+
+	std::map<std::string, int> ages;
+	ages["charles"] = 17;
+	ages["xane"] = 18;
+	ages["jacob"] = 19;
+
+	cout << ages["charles"] << endl;
+
+
+	INFO_LOG("Hello World");
 
 	kiko::MemoryTracker::Initialize();
 	kiko::seedRandom((unsigned int)time(nullptr));
@@ -75,7 +136,8 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
-
+	shared_ptr<kiko::Texture> texture = kiko::g_resources.Get<kiko::Texture>("ship.png", kiko::g_Renderer);
+	//texture->Load("fnaf2.png", kiko::g_Renderer);
 
 	//main game loop
 	bool quit = false;
@@ -102,17 +164,17 @@ int main(int argc, char* argv[])
 		//draw
 		kiko::Vector2 vel(1.0f, 0.3f);
 
-		/*for(auto& star : stars){
+		for(auto& star : stars){
 			star.Update(kiko::g_Renderer.GetWidth(), kiko::g_Renderer.GetHeight());
 
 
 			kiko::g_Renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
 			star.Draw(kiko::g_Renderer);
-		}*/
-
+		}
+		kiko::g_Renderer.DrawTexture(texture.get(), 200.0f, 200.0f, 0.0f);
 		game->Draw(kiko::g_Renderer);
 
-		//	text->Draw(kiko::g_Renderer, 400, 300);
+		//text->Draw(kiko::g_Renderer, 400, 300);
 
 		kiko::g_Renderer.EndFrame();
 	}

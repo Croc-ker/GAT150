@@ -2,9 +2,13 @@
 #include "Core/Core.h"
 #include "Renderer/Model.h"
 #include <memory>
+#include "Components/Component.h"
+
 
 namespace kiko
 {
+	class Component;
+
 	class Actor
 	{
 	public:
@@ -19,6 +23,8 @@ namespace kiko
 
 		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
+
+		void AddComponent(std::unique_ptr<Component>(component));
 
 		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; }
 		virtual void OnCollision(Actor* other) {}
@@ -41,6 +47,8 @@ namespace kiko
 		class Game* m_game = nullptr;
 
 	protected:
+		std::vector<std::unique_ptr<Component>> m_components;
+
 		bool m_destroyed = false;
 		float m_lifespan = -1.0f;
 

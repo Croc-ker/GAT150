@@ -39,7 +39,7 @@ void WeaponType::GiveBigShot(Actor* player) {
 void WeaponType::SetRandomType()
 {
     int randnum = kiko::random(0,2);
-    WeaponType::Type tempType;
+    WeaponType::Type tempType{};
     switch (randnum)
     {
     case 0:

@@ -12,11 +12,13 @@
 #include "Renderer/ParticleSystem.h"
 #include "Core/Random.h"
 #include "Bomb.h"
+#include "Framework/Resource/ResourceManager.h"
+#include "Framework/Components/SpriteComponent.h"
 
 bool SpaceGame::Initialize()
 {
 	// create font / text objects
-	m_font = std::make_shared<kiko::Font>("Impact Label.ttf", 24);
+	m_font = kiko::g_resources.Get<kiko::Font>("Impact Label.ttf", 24);//std::make_shared<kiko::Font>("Impact Label.ttf", 24);
 
 	m_scoreText = std::make_unique<kiko::Text>(m_font);
 	m_scoreText->Create(kiko::g_Renderer, "SCORE: 0", kiko::Color{1, 1, 1, 1});
@@ -68,11 +70,20 @@ void SpaceGame::Update(float dt)
 	case SpaceGame::eState::StartLevel:
 		m_scene->RemoveAll();
 		{
+
+			//create player
 			std::unique_ptr<Player> player = std::make_unique<Player>(5.0f, kiko::Pi, kiko::Transform{ {400, 300}, 0, 6 }, kiko::g_manager.Get("ship.txt"));
+			
 			player->m_tag = "Player";
 			player->m_game = this;
 			player->SetDamping(0.9f);
 			player->SetWeaponType(WeaponType::Type::NormalShot);
+
+			//create components
+			std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
+			component->m_texture = kiko::g_resources.Get<kiko::Texture>("ship.png", kiko::g_Renderer);
+			player->AddComponent(std::move(component));
+
 			m_scene->Add(move(player));
 		}
 		m_state = eState::Game;
@@ -113,7 +124,7 @@ void SpaceGame::Update(float dt)
 		else m_state = eState::PlayerDead;
 		break;
 	case SpaceGame::eState::PlayerDead:
-		m_stateTimer -= dt;
+		m_stateTimer -= (float)dt;
 		if (m_stateTimer <= 0)
 		{
 			
@@ -121,7 +132,7 @@ void SpaceGame::Update(float dt)
 		}
 		break;
 	case SpaceGame::eState::GameOver:
-		m_stateTimer -= dt;
+		m_stateTimer -= (float)dt;
 		if (m_stateTimer == 0)
 		{
 			m_state = eState::Title;
@@ -132,7 +143,7 @@ void SpaceGame::Update(float dt)
 	}
 	m_scoreText->Create(kiko::g_Renderer, "SCORE: " + std::to_string(m_score), { 1,1,1,1 });
 	m_livesText->Create(kiko::g_Renderer, "LIVES: " + std::to_string(m_lives), { 1,1,1,1 });
-	m_scene->Update(dt);
+	m_scene->Update((float)dt);
 }
 void SpaceGame::Draw(kiko::Renderer& renderer)
 {

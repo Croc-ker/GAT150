@@ -1,0 +1,18 @@
+#pragma once
+#include "RenderComponent.h"
+#include <Renderer/Texture.h>
+
+
+namespace kiko
+{
+	class SpriteComponent : public RenderComponent
+	{
+	public: 
+		void Update(float dt) override;
+		void Draw(class Renderer& renderer) override;
+
+		friend class Component;
+	public:
+		res_t<Texture> m_texture;
+	};
+}

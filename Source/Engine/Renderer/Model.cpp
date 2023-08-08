@@ -55,4 +55,5 @@ namespace kiko
 
 		return m_radius;
 	}
+
 }

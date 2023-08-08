@@ -6,8 +6,8 @@ class Bomb : public kiko::Actor
 {
 public:
 	Bomb() = default;
-	Bomb(const kiko::Transform& transform, std::shared_ptr<kiko::Model> model) :
-		Actor{ transform, model }
+	Bomb(const kiko::Transform& transform) :
+		Actor{ transform }
 	{
 		m_lifespan = 5.0f;
 	}

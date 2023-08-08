@@ -11,8 +11,8 @@ public:
 		BigShot
 	};
 	WeaponType() = default;
-	WeaponType(const kiko::Transform& transform, std::shared_ptr<kiko::Model> model) :
-		Actor{ transform, model }
+	WeaponType(const kiko::Transform& transform) :
+		Actor{ transform }
 	{}
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;

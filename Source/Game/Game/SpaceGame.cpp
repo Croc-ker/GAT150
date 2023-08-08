@@ -14,6 +14,8 @@
 #include "Bomb.h"
 #include "Framework/Resource/ResourceManager.h"
 #include "Framework/Components/SpriteComponent.h"
+#include <Framework/Components/EnginePhysicsComponent.h>
+
 
 bool SpaceGame::Initialize()
 {
@@ -72,7 +74,7 @@ void SpaceGame::Update(float dt)
 		{
 
 			//create player
-			std::unique_ptr<Player> player = std::make_unique<Player>(5.0f, kiko::Pi, kiko::Transform{ {400, 300}, 0, 6 }, kiko::g_manager.Get("ship.txt"));
+			std::unique_ptr<Player> player = std::make_unique<Player>(5.0f, kiko::Pi, kiko::Transform{ {400, 300}, 0, 6 });
 			
 			player->m_tag = "Player";
 			player->m_game = this;
@@ -81,8 +83,13 @@ void SpaceGame::Update(float dt)
 
 			//create components
 			std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-			component->m_texture = kiko::g_resources.Get<kiko::Texture>("ship.png", kiko::g_Renderer);
+			component->m_texture = kiko::g_resources.Get<kiko::Texture>("pikmin.png", kiko::g_Renderer);
 			player->AddComponent(std::move(component));
+			
+			auto physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
+			physicsComponent->m_damping = 0.1;
+			player->AddComponent(std::move(physicsComponent));
+	
 
 			m_scene->Add(move(player));
 		}
@@ -92,21 +99,21 @@ void SpaceGame::Update(float dt)
 		m_spawnTimer += dt;
 		if (m_spawnTimer >= m_spawnTime) {
 			m_spawnTimer = 0;
-			std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 8.0f }, kiko::g_manager.Get("enemy.txt"));
+			std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 8.0f });
 			enemy->m_tag = "Enemy";
 			enemy->m_game = this;
 			m_scene->Add(move(enemy));
 			int diceRoll = kiko::random(20);
 			std::cout << diceRoll << "\n";
 			if (diceRoll <= 15) {
-				std::unique_ptr<WeaponType> weaponPickup = std::make_unique<WeaponType>(kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 2.0f }, kiko::g_manager.Get("pickup.txt"));
+				std::unique_ptr<WeaponType> weaponPickup = std::make_unique<WeaponType>(kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 2.0f });
 				weaponPickup->m_game = this;
 				weaponPickup->SetRandomType();
 				weaponPickup->SetLifespan(5.0f);
 				m_scene->Add(move(weaponPickup));
 			}
 			else {
-				std::unique_ptr<Bomb> bombPickup = std::make_unique<Bomb>(kiko::Transform{ {kiko::random(100,701), kiko::random(100,501)}, kiko::randomf(kiko::TwoPi), 1.0f }, kiko::g_manager.Get("bomb.txt"));
+				std::unique_ptr<Bomb> bombPickup = std::make_unique<Bomb>(kiko::Transform{ {kiko::random(100,701), kiko::random(100,501)}, kiko::randomf(kiko::TwoPi), 1.0f });
 				bombPickup->m_game = this;
 				bombPickup->m_tag = "BombPickup";
 				bombPickup->SetLifespan(5.0f);

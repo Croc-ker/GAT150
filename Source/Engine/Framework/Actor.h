@@ -26,7 +26,10 @@ namespace kiko
 
 		void AddComponent(std::unique_ptr<Component>(component));
 
-		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; }
+		template<typename T>
+		T* GetComponent();
+
+		float GetRadius() { return 30.0f; /*(m_model) ? m_model->GetRadius() * m_transform.scale : 0; */ }
 		virtual void OnCollision(Actor* other) {}
 
 		void Addforce(vec2 force) { m_velocity += force; }
@@ -56,5 +59,15 @@ namespace kiko
 		float m_damping = 0;
 
 		std::shared_ptr<Model> m_model;
+		
 	};
+	template<typename T>
+	inline T* Actor::GetComponent()
+	{
+		for (auto& component : m_components) {
+			T* result = dynamic_cast<T*>(component.get());
+			if (result) return result;
+		}
+		return nullptr;
+	}
 }

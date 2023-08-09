@@ -2,6 +2,11 @@
 #include <string>
 #include <SDL2-2.28.0/include/SDL.h>
 #include "Texture.h"
+#include "Text.h"
+#include "Font.h"
+#include "Model.h"
+#include "Particle.h"
+#include "ParticleSystem.h"
 
 namespace kiko
 {

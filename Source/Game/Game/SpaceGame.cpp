@@ -7,7 +7,7 @@
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Text.h"
-#include "Renderer/ModelManager.h"
+#include "Renderer/Model.h"
 #include "Framework/Emitter.h"
 #include "Renderer/ParticleSystem.h"
 #include "Core/Random.h"
@@ -15,6 +15,7 @@
 #include "Framework/Resource/ResourceManager.h"
 #include "Framework/Components/SpriteComponent.h"
 #include <Framework/Components/EnginePhysicsComponent.h>
+#include <Framework/Components/ModelRenderComponent.h>
 
 
 bool SpaceGame::Initialize()
@@ -82,9 +83,9 @@ void SpaceGame::Update(float dt)
 			player->SetWeaponType(WeaponType::Type::NormalShot);
 
 			//create components
-			std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-			component->m_texture = kiko::g_resources.Get<kiko::Texture>("pikmin.png", kiko::g_Renderer);
-			player->AddComponent(std::move(component));
+			auto renderComponent = std::make_unique<kiko::ModelRenderComponent>();
+			renderComponent->m_model = kiko::g_resources.Get<kiko::Model>("ship.txt");
+			player->AddComponent(std::move(renderComponent));
 			
 			auto physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
 			physicsComponent->m_damping = 0.1;

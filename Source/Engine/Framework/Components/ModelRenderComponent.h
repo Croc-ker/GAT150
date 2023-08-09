@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderComponent.h"
+#include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
 
 namespace kiko
@@ -12,6 +13,6 @@ namespace kiko
 
 		friend class Component;
 	public:
-		res_t<Texture> m_texture;
+		res_t<Model> m_model;
 	};
 }

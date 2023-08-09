@@ -1,12 +1,10 @@
 #include <iostream>
 #include "Renderer/Renderer.h"
 #include "Core/Core.h"
-#include "Renderer/ModelManager.h"
+#include "Renderer/Model.h"
 #include "Input/InputSystem.h"
 #include "../../Audio/AudioSystem.h"
 #include "Core/Time.h"
-#include "Framework/Scene.h"
-#include "Framework/Resource/ResourceManager.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Renderer/Text.h"
@@ -16,7 +14,7 @@
 #include <vector>
 #include <thread>
 #include <Core/Logger.h>
-
+#include "Framework/Framework.h"
 
 using namespace std;
 
@@ -72,45 +70,32 @@ void print(int count, ...)
 	va_end(args);
 }
 
+void zero(int v) {
+	v = 0;
+}
+void zero(int* v) {
+	*v = 0;
+}
+void zero_ref(int& v) {
+	cout << v << endl;
+}
+
+class A			   { public: virtual void p() { cout << "A\n"; } };
+class B : public A { public: void p() override { cout << "A\n"; } };
+class C : public A { public: void p() override { cout << "A\n"; } };
+
 int main(int argc, char* argv[])
 {
+	std::vector<A*> vec;
+	vec.push_back(new B);
+	vec.push_back(new C);
 
-	//print(arg, "hello", "world", "goodbye");
+	for (auto a : vec) {
+		a->p();
+	}
+	
 
-	int n[4] = { 1, 2, 3, 4 };
-	print("array: ", n);
-	cout << n << endl;
-	cout << *(n+3) << endl;
-
-	std::array<int, 4> na = { 1, 2, 3, 4 };
-	print("array class: ", na);
-	cout << na.front() << endl;
-	cout << na.back() << endl;
-	cout << na.max_size() << endl;
-
-
-	std::vector<int> nv = { 1, 2, 3, 4 };
-	print("vector: ", nv);
-	nv.insert(nv.begin() + 2, 0);
-	nv.push_back(5);
-	nv.pop_back();
-	auto iter = nv.erase(nv.begin(), nv.end());
-	print("vector: ", nv);
-
-	std::list<int> nl = { 1, 2, 3, 4 };
-	print("list: ", nl);
-	nl.push_front(0);
-	print("list: ", nl);
-
-	std::map<std::string, int> ages;
-	ages["charles"] = 17;
-	ages["xane"] = 18;
-	ages["jacob"] = 19;
-
-	cout << ages["charles"] << endl;
-
-
-	INFO_LOG("Hello World");
+	INFO_LOG("Starting game: Space Game");
 
 	kiko::MemoryTracker::Initialize();
 	kiko::seedRandom((unsigned int)time(nullptr));

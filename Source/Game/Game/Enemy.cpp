@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Renderer/Renderer.h"
 #include "Framework/Scene.h"
-#include "Renderer/ModelManager.h"
+#include "Renderer/Model.h"
 #include "Player.h"
 #include "Weapon.h"
 #include "../../Audio/AudioSystem.h"

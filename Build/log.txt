@@ -1,1 +1,1 @@
-INFO: Main.cpp(113) Hello World
+INFO: Main.cpp(98) Starting game: Space Game

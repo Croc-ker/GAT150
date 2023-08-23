@@ -1,73 +1,79 @@
 #pragma once
+#include "Object.h"
 #include "Core/Core.h"
-#include "Renderer/Model.h"
-#include <memory>
+#include "Renderer/Renderer.h"
 #include "Components/Component.h"
-
+#include <memory>
 
 namespace kiko
 {
-	class Component;
-
-	class Actor
+	class Actor : public Object
 	{
 	public:
-		Actor() = default;
+		CLASS_DECLARATION(Actor)
+
+			Actor() = default;
 		Actor(const kiko::Transform& transform, std::shared_ptr<Model> model) :
-			m_transform{ transform },
-			m_model{ model }
+			transform{ transform }
 		{}
 		Actor(const kiko::Transform& transform) :
-			m_transform{ transform }
+			transform{ transform }
 		{}
+		Actor(const Actor& other);
+
+		virtual bool Initialize() override;
+		virtual void OnDestroy() override;
 
 		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
 
-		void AddComponent(std::unique_ptr<Component>(component));
+		void AddComponent(std::unique_ptr<Component> component);
 
 		template<typename T>
 		T* GetComponent();
 
-		float GetRadius() { return 30.0f; /*(m_model) ? m_model->GetRadius() * m_transform.scale : 0; */ }
+		float GetRadius() { return 30.0f; }
 		virtual void OnCollision(Actor* other) {}
 
-		void Addforce(vec2 force) { m_velocity += force; }
-		void SetDamping(float damping) { m_damping = damping; }
 
-		float Get
-		() const { return m_lifespan; }
-		void SetLifespan(float lifespan) { m_lifespan = lifespan; }
+
+		float GetLifespan() const { return lifespan; }
+		void SetLifespan(float lifespan) { lifespan = lifespan; }
 
 
 		class Scene* m_scene = nullptr;
 		friend class Scene;
 		friend class Game;
 
-		kiko::Transform m_transform;
-		std::string m_tag;
+
+	public:
+
+		kiko::Transform transform;
+		std::string tag;
+
+		float lifespan = -1.0f;
+		bool persistent = false;
+		bool prototype = false;
+		bool m_destroyed = false;
+
 
 		class Game* m_game = nullptr;
 
 	protected:
-		std::vector<std::unique_ptr<Component>> m_components;
-
-		bool m_destroyed = false;
-		float m_lifespan = -1.0f;
-
-		vec2 m_velocity;
-		float m_damping = 0;
-
-		std::shared_ptr<Model> m_model;
-		
+		std::vector<std::unique_ptr<Component>> components;
 	};
+
+
 	template<typename T>
 	inline T* Actor::GetComponent()
 	{
-		for (auto& component : m_components) {
+		for (auto& component : components)
+		{
 			T* result = dynamic_cast<T*>(component.get());
 			if (result) return result;
 		}
+
+
 		return nullptr;
 	}
 }

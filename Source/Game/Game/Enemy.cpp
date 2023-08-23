@@ -1,14 +1,31 @@
 #include "Enemy.h"
 #include "Renderer/Renderer.h"
-#include "Framework/Scene.h"
-#include "Renderer/Model.h"
+#include "Renderer/ModelManager.h"
 #include "Player.h"
 #include "Weapon.h"
 #include "../../Audio/AudioSystem.h"
 #include "SpaceGame.h"
-#include <Framework/Emitter.h>
+#include "Framework/Framework.h"
+
+bool Enemy::Initialize()
+{
+	Actor::Initialize();
 
 
+	auto collisonComponent = GetComponent<kiko::CollisionComponent>();
+	if (collisonComponent)
+	{
+		auto renderComponent = GetComponent<kiko::RenderComponent>();
+
+		if (renderComponent) {
+			float scale = transform.scale;
+			collisonComponent->m_radius = renderComponent->GetRadius() * scale;
+		}
+
+	}
+
+	return true;
+}
 
 void Enemy::Update(float dt)
 {
@@ -16,46 +33,61 @@ void Enemy::Update(float dt)
 
 	SetFaceingPlayer(false);
 
-	kiko::vec2 forward = kiko::vec2{ 0,-1 }.Rotate(m_transform.rotation);
+	kiko::vec2 forward = kiko::vec2{ 0,-1 }.Rotate(transform.rotation);
 	Player* player = m_scene->GetActor<Player>();
 	if (player) {
-		kiko::Vector2 direction = player->m_transform.position - m_transform.position;
+		kiko::Vector2 direction = player->transform.position - transform.position;
 		//turn torwards player
 		float turnAngle = kiko::vec2::SignedAngle(forward, direction.Normalized());
-		m_transform.rotation += turnAngle * dt;
+		transform.rotation += turnAngle * dt;
 		//check if player is in front
 		if (std::fabs(turnAngle) < kiko::DegreesToRadians(30.0f))
 		{
 			SetFaceingPlayer(true);
 		}
 	}
-	m_transform.position += forward * m_speed * m_speed * kiko::g_time.GetDeltaTime();
-	m_transform.position.x = kiko::Wrap(m_transform.position.x, (float)kiko::g_Renderer.GetWidth());
-	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_Renderer.GetHeight());
+
+	transform.position += forward * m_speed * m_speed * kiko::g_time.GetDeltaTime();
+	transform.position.x = kiko::Wrap(transform.position.x, (float)kiko::g_Renderer.GetWidth());
+	transform.position.y = kiko::Wrap(transform.position.y, (float)kiko::g_Renderer.GetHeight());
+
 	m_fireTimer -= kiko::g_time.GetDeltaTime();
-	if (m_fireTimer <= 0 && GetFaceingPlayer()) {
-		kiko::Transform transform{ m_transform.position, m_transform.rotation, 1};
-		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(40.0f, transform);
-		weapon->m_tag = "EnemyBullet";
+
+	/*if (m_fireTimer <= 0 && GetFaceingPlayer()) {
+		kiko::Transform m_transform{ transform.position, transform.rotation, 1};
+		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(40.0f, m_transform);
+		weapon->tag = "EnemyBullet";
+
+
+		auto collisionComponent = std::make_unique<kiko::CircleCollisionComponent>();
+		collisionComponent->m_radius = 30.0f;
+		weapon->AddComponent(std::move(collisionComponent));
+
+		weapon->Initialize();
 		m_scene->Add(std::move(weapon));
 		kiko::g_AudioSystem.PlayOneShot("laser");
 
 		m_fireTimer = m_fireTime;
-	}
-
+	}*/
 }
 
 void Enemy::OnCollision(Actor* other)
 {
-	if (other->m_tag == "PlayerBullet") {
-		m_health -= 25;
+	if (other->tag == "PlayerBullet") {
+		
+
+
+		m_health -= 10;
 		if (m_health <= 0) {
+			kiko::EventManager::Instance().DispatchEvent("AddPoints", 100);
+			//m_game->AddPoints(100);
 			m_destroyed = true;
-			m_game->AddPoints(100);
+
+
 			kiko::EmitterData data;
 			data.burst = true;
-			data.burstCount = 20;
-			data.spawnRate = 10;
+			data.burstCount = 100;
+			data.spawnRate = 0;
 			data.angle = 0;
 			data.angleRange = kiko::Pi;
 			data.lifetimeMin = 0.5f;
@@ -64,22 +96,26 @@ void Enemy::OnCollision(Actor* other)
 			data.speedMax = 250;
 			data.damping = 0.5f;
 			data.color = kiko::Color{ 1, 1, 0, 1 };
-			kiko::Transform transform{ { m_transform.position.x, m_transform.position.y }, 0, 1 };
+			kiko::Transform transform{ {transform.position }, 0, 1 };
 			auto emitter = std::make_unique<kiko::Emitter>(transform, data);
 			emitter->SetLifespan(1.0f);
 			m_scene->Add(std::move(emitter));
-			kiko::g_AudioSystem.PlayOneShot("explode");
+
+			//add explosion with emitter here
+			//spawnrate 0, position enemy position
 		}
 	}
-	else if (other->m_tag == "BombActive" || other->m_tag == "BombHit") {
-		m_health -= 50;
+	if (other->tag == "Player") {
+		m_health = 0;
 		if (m_health <= 0) {
-			m_destroyed = true;
 			m_game->AddPoints(100);
+			m_destroyed = true;
+
+
 			kiko::EmitterData data;
 			data.burst = true;
-			data.burstCount = 20;
-			data.spawnRate = 10;
+			data.burstCount = 100;
+			data.spawnRate = 0;
 			data.angle = 0;
 			data.angleRange = kiko::Pi;
 			data.lifetimeMin = 0.5f;
@@ -87,13 +123,16 @@ void Enemy::OnCollision(Actor* other)
 			data.speedMin = 50;
 			data.speedMax = 250;
 			data.damping = 0.5f;
-			data.color = kiko::Color{ 1, 1, 0, 1 };
-			kiko::Transform transform{ { m_transform.position.x, m_transform.position.y }, 0, 1 };
+			data.color = kiko::Color{ 0, 1, 0, 1 };
+
+
+			kiko::Transform transform{ {this->transform.position }, 0, 1 };
 			auto emitter = std::make_unique<kiko::Emitter>(transform, data);
 			emitter->SetLifespan(1.0f);
 			m_scene->Add(std::move(emitter));
-			kiko::g_AudioSystem.PlayOneShot("explode");
+
+			//add explosion with emitter here
+			//spawnrate 0, position enemy position
 		}
 	}
-	
 }

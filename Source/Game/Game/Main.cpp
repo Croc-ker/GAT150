@@ -3,6 +3,7 @@
 #include "Core/Core.h"
 #include "Renderer/Model.h"
 #include "Input/InputSystem.h"
+#include "../../Physics/PhysicsSystem.h"
 #include "../../Audio/AudioSystem.h"
 #include "Core/Time.h"
 #include "Player.h"
@@ -15,6 +16,7 @@
 #include <thread>
 #include <Core/Logger.h>
 #include "Framework/Framework.h"
+#include <functional>
 
 using namespace std;
 
@@ -47,53 +49,9 @@ public:
 	kiko::vec2 m_vel;
 };
 
-template <typename T>
-void print(const std::string& s, const T& container)
-{
-	std::cout << s << std::endl;
-	for (auto element : container)
-	{
-		std::cout << element << " ";
-	}
-	std::cout << std::endl;
-}
-
-void print(int count, ...)
-{
-	va_list args;
-
-	va_start(args, count);
-	for (int i = 0; i < count; ++i)
-	{
-		std::cout << va_arg(args, const char*) << std::endl;
-	}
-	va_end(args);
-}
-
-void zero(int v) {
-	v = 0;
-}
-void zero(int* v) {
-	*v = 0;
-}
-void zero_ref(int& v) {
-	cout << v << endl;
-}
-
-class A			   { public: virtual void p() { cout << "A\n"; } };
-class B : public A { public: void p() override { cout << "A\n"; } };
-class C : public A { public: void p() override { cout << "A\n"; } };
-
 int main(int argc, char* argv[])
 {
-	std::vector<A*> vec;
-	vec.push_back(new B);
-	vec.push_back(new C);
 
-	for (auto a : vec) {
-		a->p();
-	}
-	
 
 	INFO_LOG("Starting game: Space Game");
 
@@ -102,12 +60,18 @@ int main(int argc, char* argv[])
 	kiko::setFilePath("assets");
 
 
+	rapidjson::Document document;
+	kiko::Json::Load("json.txt", document);
+
+	kiko::Factory::Instance().Register<kiko::SpriteComponent>("SpriteComponent");
+
 	// Initialize Engine
 	kiko::g_Renderer.Initialize();
 	kiko::g_Renderer.CreateWindow("GAT150", 800, 600);
 
 	kiko::g_InputSystem.Initialize();
 	kiko::g_AudioSystem.Initialize();
+	kiko::PhysicsSystem::Instance().Initialize();
 
 	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
 	game->Initialize();
@@ -121,8 +85,8 @@ int main(int argc, char* argv[])
 		stars.push_back(Star(pos, vel));
 	}
 
-	shared_ptr<kiko::Texture> texture = kiko::g_resources.Get<kiko::Texture>("ship.png", kiko::g_Renderer);
-	//texture->Load("fnaf2.png", kiko::g_Renderer);
+	/*shared_ptr<kiko::Texture> texture = GET_RESOURCE(kiko::Texture, "ship.png", kiko::g_Renderer);
+	texture->Load("ship.png", kiko::g_Renderer);*/
 
 	//main game loop
 	bool quit = false;
@@ -156,7 +120,7 @@ int main(int argc, char* argv[])
 			kiko::g_Renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
 			star.Draw(kiko::g_Renderer);
 		}
-		kiko::g_Renderer.DrawTexture(texture.get(), 200.0f, 200.0f, 0.0f);
+		
 		game->Draw(kiko::g_Renderer);
 
 		//text->Draw(kiko::g_Renderer, 400, 300);

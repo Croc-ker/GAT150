@@ -1,0 +1,61 @@
+{
+	"actors":[
+		{
+			"type": "Actor",
+			"m_name": "Background",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "space.png"
+				}
+			]
+		},
+		{
+			"type": "Weapon",
+			"m_name": "Rocket",
+			"prototype": true,
+			"lifespan": 1,
+			"tag": "Player",
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"speed": 50,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "rocket.png"
+				},
+				{
+					"type": "CircleCollisionComponent"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"m_name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 2,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "BlackHanSans-Regular.ttf",
+					"fontSize": 24,
+					"text": "ASTEROIDZ"
+				}
+			]
+		}
+	]
+
+}

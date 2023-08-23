@@ -32,6 +32,9 @@ namespace kiko
 	};
 
 	inline vec2 Matrix22::operator*(const vec2& v) {
+
+		//| a b |   | x |
+		//| d e | * | y |
 		vec2 result;
 		result.x = rows[0][0] * v.x + rows[0][1] * v.y;
 		result.y = rows[1][0] * v.x + rows[1][1] * v.y;

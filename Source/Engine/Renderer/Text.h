@@ -1,5 +1,4 @@
 #pragma once
-#include "Renderer.h"
 #include "Font.h"
 #include "Core/Math/Color.h"
 #include <string>
@@ -9,6 +8,8 @@ struct SDL_Texture;
 
 namespace kiko
 {
+	class Renderer;
+
 	class Text
 	{
 	public:
@@ -18,9 +19,10 @@ namespace kiko
 
 		void Create(Renderer& renderer, const std::string& text, const Color& color);
 		void Draw(Renderer& renderer, int x, int y);
+		void Draw(Renderer& renderer, const class Transform& transform);
 
 	private:
 		std::shared_ptr<Font> m_font;
-		struct SDL_Texture* m_texture = nullptr;
+		SDL_Texture* m_texture = nullptr;
 	};
 }

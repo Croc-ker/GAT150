@@ -36,4 +36,3 @@ namespace kiko
 		return (clock::now() - m_startTime).count() / static_cast<float>(clock_duration::period::den);
 	}
 }
-

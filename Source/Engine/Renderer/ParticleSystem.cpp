@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include "Renderer.h"
 
 namespace kiko
 {

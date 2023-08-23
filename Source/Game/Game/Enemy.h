@@ -14,6 +14,8 @@ public:
 		m_fireTimer = m_fireTime;
 	}
 
+	bool Initialize() override;
+
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
 
@@ -23,7 +25,7 @@ private:
 	float m_speed = 0;
 	float m_turnRate = 0;
 
-	bool m_faceingPlayer;
+	bool m_faceingPlayer = false;
 
 	float m_fireTime = 0;
 	float m_fireTimer = 0;

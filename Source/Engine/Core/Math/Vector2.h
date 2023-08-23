@@ -92,6 +92,10 @@ namespace kiko
 
 		return stream;
 	}
+	inline std::ostream& operator<<(std::ostream& os, const Vector2& v) {
+		os << "{ " << v.x << ", " << v.y << " }" << std::endl;
+		return os;
+	}
 
 	using vec2 = Vector2;
 }

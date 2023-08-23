@@ -1,1 +1,15 @@
-INFO: Main.cpp(98) Starting game: Space Game
+INFO: Factory.h(70) Class Registered: Weapon
+INFO: Factory.h(70) Class Registered: TextRenderComponent
+INFO: Factory.h(70) Class Registered: SpriteComponent
+INFO: Factory.h(70) Class Registered: ModelRenderComponent
+INFO: Factory.h(70) Class Registered: EnginePhysicsComponent
+INFO: Factory.h(70) Class Registered: CircleCollisionComponent
+INFO: Factory.h(70) Class Registered: Actor
+INFO: Main.cpp(56) Starting game: Space Game
+INFO: Factory.h(70) Class Registered: SpriteComponent
+INFO: Factory.h(78) Prototype Class Registered: Rocket
+WARNING: Texture.cpp(31) Surface is empty
+WARNING: Font.cpp(28) Failed to open font: BlackHanSans-Regular.ttf
+INFO: EventManager.cpp(16) Event subscribed: Addpoints
+INFO: EventManager.cpp(16) Event subscribed: OnPlayerDead
+WARNING: Texture.cpp(31) Surface is empty

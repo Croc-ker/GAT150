@@ -5,7 +5,11 @@ namespace kiko
 {
 	class EnginePhysicsComponent : public PhysicsComponent
 	{
-		void Update(float dt) override;
-		void ApplyForce(const vec2& force) override;
+	public:
+		CLASS_DECLARATION(EnginePhysicsComponent)
+
+			virtual void Update(float dt) override;
+		virtual void ApplyForce(vec2 force) override;
+
 	};
 }

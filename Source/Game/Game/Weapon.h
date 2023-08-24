@@ -13,7 +13,7 @@ namespace kiko {
 			Weapon() = default;
 			Weapon(float speed, const kiko::Transform& transform) :
 				Actor{ transform },
-				m_speed{ speed }
+				speed{ speed }
 			{
 				lifespan = 2.0f;
 			}
@@ -24,6 +24,6 @@ namespace kiko {
 		void OnCollision(Actor* other);
 	private:
 		float speed = 0;
-		float m_turnRate = 0;
+		float turnRate = 0;
 	};
 }

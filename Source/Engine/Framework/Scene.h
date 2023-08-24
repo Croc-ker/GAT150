@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include "Actor.h"
-#include <string>
 
 namespace kiko {
 	class Renderer;
@@ -32,13 +31,13 @@ namespace kiko {
 
 		friend class Scene;
 	private:
-		std::list<std::unique_ptr<Actor>> m_actors;
+		std::list<std::unique_ptr<Actor>> actors;
 	};
 
 	template<typename T>
 	inline T* Scene::GetActor()
 	{
-		for (auto& actor : m_actors)
+		for (auto& actor : actors)
 		{
 			T* result = dynamic_cast<T*>(actor.get());
 			if (result) return result;
@@ -51,14 +50,12 @@ namespace kiko {
 	template<typename T>
 	inline T* Scene::GetActorByName(const std::string& name)
 	{
-		for (auto& actor : m_actors)
+		for (auto& actor : actors)
 		{
-			if (actor->m_name == name)
+			if (actor->name == name)
 			{
 				T* result = dynamic_cast<T*>(actor.get());
-				if (result){
-					return result;
-				}
+				if (result) return result;
 			}
 		}
 

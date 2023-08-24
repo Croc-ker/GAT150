@@ -7,7 +7,7 @@ namespace kiko
 
 		Actor::Actor(const Actor& other)
 	{
-		m_name = other.m_name;
+		name = other.name;
 		tag = other.tag;
 		lifespan = other.lifespan;
 		transform = other.transform;

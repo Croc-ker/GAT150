@@ -51,6 +51,7 @@ public:
 
 int main(int argc, char* argv[])
 {
+	kiko::Factory::Instance().Register<kiko::SpriteComponent>("SpriteComponent");
 
 
 	INFO_LOG("Starting game: Space Game");
@@ -63,7 +64,6 @@ int main(int argc, char* argv[])
 	rapidjson::Document document;
 	kiko::Json::Load("json.txt", document);
 
-	kiko::Factory::Instance().Register<kiko::SpriteComponent>("SpriteComponent");
 
 	// Initialize Engine
 	kiko::g_Renderer.Initialize();
@@ -106,10 +106,12 @@ int main(int argc, char* argv[])
 		game->Update(kiko::g_time.GetDeltaTime());
 
 		kiko::g_particleSystem.Update(kiko::g_time.GetDeltaTime());
+		kiko::PhysicsSystem::Instance().Update(kiko::g_time.GetDeltaTime());
 
 		//draw game
 		kiko::g_Renderer.SetColor(0, 0, 0, 0);
 		kiko::g_Renderer.BeginFrame();
+		game->Draw(kiko::g_Renderer);
 		//draw
 		kiko::Vector2 vel(1.0f, 0.3f);
 
@@ -121,7 +123,6 @@ int main(int argc, char* argv[])
 			star.Draw(kiko::g_Renderer);
 		}
 		
-		game->Draw(kiko::g_Renderer);
 
 		//text->Draw(kiko::g_Renderer, 400, 300);
 

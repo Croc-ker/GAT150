@@ -18,17 +18,17 @@ namespace kiko
 		virtual void Update(float dt) = 0;
 		virtual void Draw(Renderer& renderer) = 0;
 
-		int GetScore() const { return m_score; }
-		void AddPoints(int points) { m_score += points; }
+		int GetScore() const { return score; }
+		void AddPoints(int points) { score += points; }
 
-		int GetLives() const { return m_lives; }
-		void SetLives(int lives) { m_lives = lives; }
+		int GetLives() const { return lives; }
+		void SetLives(int lives) { lives = lives; }
 
 	protected:
 		std::unique_ptr<Scene> m_scene;
 
-		int m_score = 0;
-		int m_lives = 0;
+		int score = 0;
+		int lives = 0;
 		int m_health = 0;
 	};
 }

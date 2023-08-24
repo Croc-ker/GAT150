@@ -7,12 +7,13 @@ namespace kiko
 	class PhysicsComponent : public Component
 	{
 	public:
-		virtual void ApplyForce(vec2 force) = 0;
+		virtual void ApplyForce(const vec2& force) = 0;
+		virtual void ApplyTorque(float torque) = 0;
 
 	public:
-		vec2 m_velocity;
-		vec2 m_acceleration;
-		float m_mass = 1.0f;
-		float m_damping = 0;
+		vec2 velocity;
+		vec2 acceleration;
+		float mass = 1.0f;
+		float damping = 0;
 	};
 }

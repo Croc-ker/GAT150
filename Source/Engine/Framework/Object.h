@@ -25,16 +25,16 @@ namespace kiko {
 	{
 	public:
 		Object() = default;
-		Object(std::string name) : m_name{ name } {}
+		Object(std::string name) : name{ name } {}
 		~Object() { OnDestroy(); }
 
 		CLASS_DECLARATION(Object)
 
-			virtual bool Initialize() { return true; }
+		virtual bool Initialize() { return true; }
 		virtual void OnDestroy() {}
 
 	public:
-		std::string m_name;
+		std::string name;
 		bool active = true;
 	};
 }

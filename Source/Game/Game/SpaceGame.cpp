@@ -53,55 +53,54 @@ void SpaceGame::Shutdown()
 
 void SpaceGame::Update(float dt)
 {
-	switch (m_state)
+	switch (state)
 	{
-	case SpaceGame::eState::Title:
+	case SpaceGame::eState::Title:		
 		m_scene->GetActorByName("Title")->active = true;
 
 		if (kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 		{
-			m_state = eState::StartGame;
+			state = eState::StartGame;
 			auto actor = m_scene->GetActorByName("Background");
 			if (actor == nullptr)
 			{
 				WARNING_LOG("Actor doesn't exist")
 					break;
 			}
-
+			
 			m_scene->GetActorByName("Title")->active = false;
 		}
 		break;
 	case SpaceGame::eState::StartGame:
-		m_score = 0;
-		m_lives = 3;
-		m_state = eState::StartLevel;
+		score = 0;
+		lives = 3;
+		state = eState::StartLevel;
 		break;
 	case SpaceGame::eState::StartLevel:
 		m_scene->RemoveAll();
 		{
 			//create player
-			std::unique_ptr<Player> player = std::make_unique<Player>(10.0f, kiko::Pi, kiko::Transform{ {400, 300}, 0, 1 });
-			player->tag = "Player";
-			player->m_game = this;
-
+			auto player = INSTANTIATE(Player, "Player");
+			
 			//create components
-			auto renderComponent = CREATE_CLASS(SpriteComponent)
-				renderComponent->m_texture = GET_RESOURCE(kiko::Texture, "pikmin.png", kiko::g_Renderer);
+			auto renderComponent = CREATE_CLASS(SpriteComponent);
+			renderComponent->m_texture = GET_RESOURCE(kiko::Texture, "pikmin.png", kiko::g_Renderer);
 			player->AddComponent(std::move(renderComponent));
 
-			auto physyicsComponent = CREATE_CLASS(EnginePhysicsComponent)
-				physyicsComponent->m_damping = 0.9f;
-			player->AddComponent(std::move(physyicsComponent));
+			auto physicsComponent = CREATE_CLASS(EnginePhysicsComponent);
+			physicsComponent->damping = 0.9f;
+			player->AddComponent(std::move(physicsComponent));
 
-			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent)
-				collisionComponent->m_radius = 30.0f;
+			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
+			collisionComponent->m_radius = 0.0f;
 			player->AddComponent(std::move(collisionComponent));
 
+			player->transform = kiko::Transform{ { 400, 300 }, 0, 1 };
 			player->Initialize();
-			m_scene->Add(move(player));
+			m_scene->Add(std::move(player));
 
 		}
-		m_state = eState::Game;
+		state = eState::Game;
 		break;
 	case SpaceGame::eState::Game:
 		m_spawnTimer += dt;
@@ -109,20 +108,20 @@ void SpaceGame::Update(float dt)
 
 		if (m_spawnTimer >= m_spawnTime) {
 			m_spawnTimer = 0;
-			std::unique_ptr<Enemy> enemey = std::make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 4 });
-			enemey->tag = "Enemy";
-			enemey->m_game = this;
+			std::unique_ptr<kiko::Enemy> enemy = std::make_unique<kiko::Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 4 });
+			enemy->tag = "Enemy";
+			enemy->m_game = this;
 
 			auto renderComponent = CREATE_CLASS(ModelRenderComponent)
 				renderComponent->m_model = GET_RESOURCE(kiko::Model, "enemy.txt");
-			enemey->AddComponent(std::move(renderComponent));
+			enemy->AddComponent(std::move(renderComponent));
 
 			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent)
 				collisionComponent->m_radius = 30.0f;
-			enemey->AddComponent(std::move(collisionComponent));
+			enemy->AddComponent(std::move(collisionComponent));
 
-			enemey->Initialize();
-			m_scene->Add(move(enemey));
+			enemy->Initialize();
+			m_scene->Add(move(enemy));
 
 			
 		}
@@ -130,15 +129,15 @@ void SpaceGame::Update(float dt)
 		break;
 	case SpaceGame::eState::PlayerDeadStart:
 		m_stateTimer = 5.0f;
-		if (m_lives == 0) { m_state = eState::GameOver; }
-		else m_state = eState::PlayerDead;
+		if (lives == 0) { state = eState::GameOver; }
+		else state = eState::PlayerDead;
 
 		break;
 	case SpaceGame::eState::PlayerDead:
 		m_stateTimer -= dt;
 		if (m_stateTimer <= 0)
 		{
-			m_state = eState::StartLevel;
+			state = eState::StartLevel;
 		}
 
 
@@ -147,25 +146,25 @@ void SpaceGame::Update(float dt)
 		m_stateTimer -= dt;
 		if (m_stateTimer == 0)
 		{
-			m_state = eState::Title;
+			state = eState::Title;
 		}
 		break;
 	default:
 		break;
 	}
 
-	m_scoreText->Create(kiko::g_Renderer, "SCORE " + std::to_string(m_score), { 1,1,1,1 });
-	m_livesText->Create(kiko::g_Renderer, "LIVES " + std::to_string(m_lives), { 1,1,1,1 });
+	m_scoreText->Create(kiko::g_Renderer, "SCORE " + std::to_string(score), { 1,1,1,1 });
+	m_livesText->Create(kiko::g_Renderer, "LIVES " + std::to_string(lives), { 1,1,1,1 });
 	m_scene->Update(dt);
 }
 
 void SpaceGame::Draw(kiko::Renderer& renderer)
 {
 	m_scene->Draw(renderer);
-	if (m_state == eState::GameOver) {
+	if (state == eState::GameOver) {
 		m_gameOverText->Draw(renderer, 350, 300);
 	}
-	if (m_state == eState::PlayerDead) {
+	if (state == eState::PlayerDead) {
 		m_deadText->Draw(renderer, 300, 300);
 	}
 
@@ -176,11 +175,11 @@ void SpaceGame::Draw(kiko::Renderer& renderer)
 
 void SpaceGame::AddPoints(const kiko::Event& event)
 {
-	m_score += std::get<int>(event.data);
+	score += std::get<int>(event.data);
 }
 
 void SpaceGame::OnPlayerDead(const kiko::Event& event)
 {
-	m_lives--;
-	m_state = eState::PlayerDeadStart;
+	lives--;
+	state = eState::PlayerDeadStart;
 }

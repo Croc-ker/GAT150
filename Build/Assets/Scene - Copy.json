@@ -24,7 +24,7 @@
 			"tag": "PlayerBullet",
 			"transform": {
 				"position": [ 400, 300 ],
-				"scale": 0.5,
+				"scale": 1.0,
 				"rotation": 0
 			},
 			"speed": 50,
@@ -41,7 +41,6 @@
 		{
 			"type": "Player",
 			"name": "Player",
-			"persistent": true,
 			"prototype": true,
 			"tag": "Player",
 			"transform": {
@@ -50,7 +49,7 @@
 				"rotation": 0
 			},
 			"speed": 50,
-			"turnRate": 1,
+			"turnRate":  1,
 			"components": [
 				{
 					"type": "SpriteComponent",
@@ -75,11 +74,11 @@
 			"tag": "Enemy",
 			"transform": {
 				"position": [ 400, 300 ],
-				"scale": 1,
+				"scale": 1.0,
 				"rotation": 0
 			},
-			"speed": 2,
-			"turnRate": 0.5,
+			"speed": 50,
+			"turnRate":  0.5,
 			"components": [
 				{
 					"type": "SpriteComponent",

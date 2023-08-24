@@ -162,7 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Source\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -170,7 +169,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpaceGame.cpp" />
     <ClCompile Include="Weapon.cpp" />
-    <ClCompile Include="WeaponType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Audio\Audio.vcxproj">
@@ -193,12 +191,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpaceGame.h" />
     <ClInclude Include="Weapon.h" />
-    <ClInclude Include="WeaponType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,12 +11,12 @@ namespace kiko
 		Vector3() : x{ 0 }, y{ 0 }, z{ 0 } {}
 		Vector3(float v) : x{ v }, y{ v }, z{ v } {}
 		Vector3(float x, float y, float z) : x{ x }, y{ y }, z{ z } {}
-		Vector3(int x, int y, int z) : x{ (float)x }, y{ (float)y }, z{ (float)y } {}
+		Vector3(int x, int y, int z) : x{ (float)x }, y{ (float)y }, z{ (float)z } {}
 
 		float operator [] (size_t index) const { return (&x)[index]; }
 		float& operator [] (size_t index) { return (&x)[index]; }
 
-		Vector3 operator - () { return Vector3(-x, -y, -z); }
+		Vector3 operator - () { return Vector3(-x, -y, -z); } 
 
 		Vector3 operator + (const Vector3& v) const { return Vector3(x + v.x, y + v.y, z + v.z); }
 		Vector3 operator - (const Vector3& v) const { return Vector3(x - v.x, y - v.y, z - v.z); }

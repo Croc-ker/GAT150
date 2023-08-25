@@ -2,6 +2,7 @@
 #include "RenderComponent.h"
 #include "Renderer/Texture.h"
 #include "Framework/Factory.h"
+#include "Core/Math/Rect.h"
 
 namespace kiko
 {
@@ -19,6 +20,7 @@ namespace kiko
 
 
 	public:
+		Rect source;
 		std::string textureName;
 		res_t<Texture> m_texture;
 	};

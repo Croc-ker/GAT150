@@ -1,6 +1,7 @@
 #include "Box2DCollisionComponent.h"
 #include "Box2DPhysicsComponent.h"
 #include "Framework/Actor.h"
+#include "SpriteComponent.h"
 
 namespace kiko
 {
@@ -11,21 +12,27 @@ namespace kiko
 		auto component = m_owner->GetComponent<Box2DPhysicsComponent>();
 		if (component)
 		{
-			data.size = data.size * scaleOffset * m_owner->transform.scale;
+			if (data.size.x == 0 && data.size.y == 0) {
+				auto spriteComponent = m_owner->GetComponent<SpriteComponent>();
+				if (spriteComponent) {
+					data.size = vec2{ spriteComponent->source.w, spriteComponent->source.h };
+				}
 
-			if (component->m_body->GetType() == b2_staticBody)
-			{
-				PhysicsSystem::Instance().SetCollisionBoxStatic(component->m_body, data, m_owner);
+				data.size = data.size * scaleOffset * m_owner->transform.scale;
+
+				if (component->m_body->GetType() == b2_staticBody)
+				{
+					PhysicsSystem::Instance().SetCollisionBoxStatic(component->m_body, data, m_owner);
+				}
+				else
+				{
+					PhysicsSystem::Instance().SetCollisionBox(component->m_body, data, m_owner);
+				}
 			}
-			else
-			{
-				PhysicsSystem::Instance().SetCollisionBox(component->m_body, data, m_owner);
-			}
+
+			return true;
 		}
-
-		return true;
 	}
-
 	void Box2DCollisionComponent::Update(float dt)
 	{
 	}

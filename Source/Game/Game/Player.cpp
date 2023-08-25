@@ -57,31 +57,10 @@ namespace kiko
 
 			auto weapon = INSTANTIATE(Weapon, "Weapon");
 			weapon->transform = { this->transform.position, this->transform.rotation , 2 };
-			auto component = CREATE_CLASS(SpriteComponent)
-				component->m_texture = GET_RESOURCE(kiko::Texture, "pikmin.png", kiko::g_Renderer);
-			weapon->AddComponent(std::move(component));
 			weapon->Initialize();
 			m_scene->Add(std::move(weapon));
 			kiko::g_AudioSystem.PlayOneShot("laser");
 
-
-			//kiko::Transform m_transform{ transform.position, transform.rotation /*+ kiko::DegreesToRadians(10.0f)*/ , 1};
-			//std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(40.0f , m_transform);
-			//weapon->tag = "PlayerBullet";
-
-			//auto collisionComponent = CREATE_CLASS(CircleCollisionComponent)
-			//collisionComponent->m_radius = 30.0f;
-			//weapon->AddComponent(std::move(collisionComponent));
-
-			//weapon->Initialize();
-			//m_scene->Add(std::move(weapon));
-			//kiko::g_AudioSystem.PlayOneShot("laser");
-
-			/*kiko::Transform transform2{ m_transform.position, m_transform.rotation - kiko::DegreesToRadians(10.0f), 1};
-			weapon = std::make_unique<Weapon>(40.0f, transform2);
-			weapon->m_tag = "PlayerBullet";
-			m_scene->Add(std::move(weapon));
-			kiko::g_AudioSystem.PlayOneShot("laser");*/
 		}
 
 		if (kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_T)) kiko::g_time.SetTimeScale(0.5f);
@@ -89,13 +68,13 @@ namespace kiko
 
 
 	}
-	void Player::OnCollision(Actor* other)
+	void Player::OnCollisionEnter(Actor* other)
 	{
 		if (other->tag == "EnemyBullet") {
 			health -= 10;
 			if (health <= 0) {
 				m_game->SetLives(m_game->GetLives() - 1);
-				m_destroyed = true;
+				destroyed = true;
 
 				kiko::EmitterData data;
 				data.burst = true;
@@ -123,7 +102,7 @@ namespace kiko
 			health -= 50;
 			if (health <= 0) {
 				m_game->SetLives(m_game->GetLives() - 1);
-				m_destroyed = true;
+				destroyed = true;
 
 				kiko::EmitterData data;
 				data.burst = true;
@@ -146,6 +125,7 @@ namespace kiko
 			}
 		}
 	}
+
 	void Player::Read(const json_t& value) {
 		Actor::Read(value);
 	}

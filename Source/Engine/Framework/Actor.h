@@ -32,10 +32,8 @@ namespace kiko
 		template<typename T>
 		T* GetComponent();
 
-		float GetRadius() { return 30.0f; }
-		virtual void OnCollision(Actor* other) {}
-
-
+		virtual void OnCollisionEnter(Actor* other) {}
+		virtual void OnCollisionExit(Actor* other) {}
 
 		float GetLifespan() const { return lifespan; }
 		void SetLifespan(float lifespan) { lifespan = lifespan; }
@@ -54,7 +52,7 @@ namespace kiko
 		float lifespan = -1.0f;
 		bool persistent = false;
 		bool prototype = false;
-		bool m_destroyed = false;
+		bool destroyed = false;
 
 
 		class Game* m_game = nullptr;

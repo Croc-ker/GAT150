@@ -78,7 +78,7 @@ namespace kiko
 		}*/
 	}
 
-	void Enemy::OnCollision(Actor* other)
+	void Enemy::OnCollisionEnter(Actor* other)
 	{
 		if (other->tag == "PlayerBullet") {
 
@@ -88,7 +88,7 @@ namespace kiko
 			if (m_health <= 0) {
 				kiko::EventManager::Instance().DispatchEvent("AddPoints", 100);
 				//m_game->AddPoints(100);
-				m_destroyed = true;
+				destroyed = true;
 
 
 				kiko::EmitterData data;
@@ -116,7 +116,7 @@ namespace kiko
 			m_health = 0;
 			if (m_health <= 0) {
 				m_game->AddPoints(100);
-				m_destroyed = true;
+				destroyed = true;
 
 
 				kiko::EmitterData data;
@@ -143,6 +143,7 @@ namespace kiko
 			}
 		}
 	}
+
 	void Enemy::Read(const json_t& value) {
 		Actor::Read(value);
 

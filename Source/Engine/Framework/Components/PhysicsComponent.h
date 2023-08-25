@@ -10,6 +10,8 @@ namespace kiko
 		virtual void ApplyForce(const vec2& force) = 0;
 		virtual void ApplyTorque(float torque) = 0;
 
+		virtual void SetVelocity(const vec2& velocity) { this->velocity = velocity; }
+
 	public:
 		vec2 velocity;
 		vec2 acceleration;

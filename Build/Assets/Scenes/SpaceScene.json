@@ -24,17 +24,26 @@
 			"tag": "PlayerBullet",
 			"transform": {
 				"position": [ 400, 300 ],
-				"scale": 0.5,
+				"scale": 4.0f,
 				"rotation": 0
 			},
 			"speed": 50,
 			"components": [
 				{
 					"type": "SpriteComponent",
-					"textureName": "ship.png"
+					"textureName": "weapon.png"
 				},
 				{
-					"type": "CircleCollisionComponent"
+					"type": "Box2DPhysicsComponent",
+					"damping": 0,
+					"angularDamping": 0,
+					"gravityScale": 0
+				},
+				{
+					"type": "CircleCollisionComponent",
+					"size": [ 32, 32 ],
+					"isTrigger": true,
+					"constrainAngle": true
 				}
 			]
 		},
@@ -46,7 +55,7 @@
 			"tag": "Player",
 			"transform": {
 				"position": [ 400, 300 ],
-				"scale": 1.0,
+				"scale": 4.0f,
 				"rotation": 0
 			},
 			"speed": 50,
@@ -54,7 +63,7 @@
 			"components": [
 				{
 					"type": "SpriteComponent",
-					"textureName": "ship.png"
+					"textureName": "player.png"
 				},
 				{
 					"type": "Box2DPhysicsComponent",
@@ -64,7 +73,8 @@
 				},
 				{
 					"type": "Box2DCollisionComponent",
-					"size": [ 32, 32 ]
+					"size": [ 32, 32 ],
+					"isTrigger":  false
 				}
 			]
 		},
@@ -75,7 +85,7 @@
 			"tag": "Enemy",
 			"transform": {
 				"position": [ 400, 300 ],
-				"scale": 1,
+				"scale": 4.0f,
 				"rotation": 0
 			},
 			"speed": 2,
@@ -83,7 +93,7 @@
 			"components": [
 				{
 					"type": "SpriteComponent",
-					"textureName": "pikmin.png"
+					"textureName": "enemy.png"
 				},
 				{
 					"type": "Box2DPhysicsComponent",

@@ -1,0 +1,71 @@
+{
+	"actors": [
+		{
+			"type": "Actor",
+			"name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 4,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "VCR_OSD_MONO.ttf",
+					"fontSize": 24,
+					"color": [ 0, 1, 1, 1 ],
+					"text": "Superb Maro"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Background",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Platformer/Textures/background.png",
+					"source": [ 400, 300, 100, 100 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Coin",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteAnimRenderComponent",
+					"defaultSequence": "idle",
+					"sequences": [
+						{
+							"name": "idle",
+							"fps": 12,
+							"numColumns": 8,
+							"numRows": 1,
+							"startFrame": 1,
+							"endFrame": 8,
+							"textureName": "Platformer/Textures/coin.png"
+						}
+					]
+
+				}
+			]
+		}
+		
+
+	]
+
+}

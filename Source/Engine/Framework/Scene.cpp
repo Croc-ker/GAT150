@@ -12,15 +12,12 @@ namespace kiko
 	void Scene::Update(float dt)
 	{
 		//update and destroyed remove actors
-
-
-
 		auto iter = actors.begin();
 		while (iter != actors.end()) {
 			if ((*iter)->active) (*iter)->Update(dt);
 
 
-			((*iter)->m_destroyed) ? iter = actors.erase(iter) : iter++;
+			((*iter)->destroyed) ? iter = actors.erase(iter) : iter++;
 		}
 
 		//check collisions
@@ -34,8 +31,8 @@ namespace kiko
 				if (collision1 == nullptr || collision2 == nullptr) continue;
 
 				if (collision1->CheckCollision(collision2)) {
-					(*iter1)->OnCollision(iter2->get());
-					(*iter2)->OnCollision(iter1->get());
+					(*iter1)->OnCollisionEnter(iter2->get());
+					(*iter2)->OnCollisionEnter(iter1->get());
 				}
 			}
 		}
@@ -43,7 +40,9 @@ namespace kiko
 	void Scene::Draw(Renderer& Renderer)
 	{
 		for (auto& actor : actors) {
-			if ((actor)->active) actor->Draw(Renderer);
+			if (actor->active) {
+				actor->Draw(Renderer);
+			}
 		}
 	}
 	void Scene::Add(std::unique_ptr<Actor> actor)

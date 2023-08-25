@@ -37,12 +37,14 @@ bool SpaceGame::Initialize()
 	kiko::g_AudioSystem.AddAudio("song", "song.wav");
 
 	m_scene = std::make_unique<kiko::Scene>();
-	m_scene->Load("Scene.json");
+	m_scene->Load("Scenes/SpaceScene.json");
 	m_scene->Initialize();
 
 	//add events
 	EVENT_SUBSCRIBE("Addpoints", SpaceGame::AddPoints);
 	EVENT_SUBSCRIBE("OnPlayerDead", SpaceGame::OnPlayerDead);
+
+	
 
 	return true;
 }
@@ -55,7 +57,8 @@ void SpaceGame::Update(float dt)
 {
 	switch (state)
 	{
-	case SpaceGame::eState::Title:		
+	case SpaceGame::eState::Title:	
+		
 		m_scene->GetActorByName("Title")->active = true;
 
 		if (kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
@@ -81,20 +84,6 @@ void SpaceGame::Update(float dt)
 		{
 			//create player
 			auto player = INSTANTIATE(Player, "Player");
-			
-			//create components
-			auto renderComponent = CREATE_CLASS(SpriteComponent);
-			renderComponent->m_texture = GET_RESOURCE(kiko::Texture, "pikmin.png", kiko::g_Renderer);
-			player->AddComponent(std::move(renderComponent));
-
-			auto physicsComponent = CREATE_CLASS(EnginePhysicsComponent);
-			physicsComponent->damping = 0.9f;
-			player->AddComponent(std::move(physicsComponent));
-
-			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
-			collisionComponent->m_radius = 0.0f;
-			player->AddComponent(std::move(collisionComponent));
-
 			player->transform = kiko::Transform{ { 400, 300 }, 0, 1 };
 			player->Initialize();
 			m_scene->Add(std::move(player));
@@ -108,22 +97,9 @@ void SpaceGame::Update(float dt)
 
 		if (m_spawnTimer >= m_spawnTime) {
 			m_spawnTimer = 0;
-			std::unique_ptr<kiko::Enemy> enemy = std::make_unique<kiko::Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 4 });
-			enemy->tag = "Enemy";
-			enemy->m_game = this;
-
-			auto renderComponent = CREATE_CLASS(ModelRenderComponent)
-				renderComponent->m_model = GET_RESOURCE(kiko::Model, "enemy.txt");
-			enemy->AddComponent(std::move(renderComponent));
-
-			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent)
-				collisionComponent->m_radius = 30.0f;
-			enemy->AddComponent(std::move(collisionComponent));
-
+			auto enemy = INSTANTIATE(Enemy, "Enemy");
 			enemy->Initialize();
-			m_scene->Add(move(enemy));
-
-			
+			m_scene->Add(std::move(enemy));
 		}
 
 		break;

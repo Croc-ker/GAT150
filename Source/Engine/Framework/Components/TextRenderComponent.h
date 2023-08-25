@@ -21,7 +21,7 @@ namespace kiko
 		std::string text;
 		std::string fontName;
 		int fontSize = 0;
-
+		Color color;
 	private:
 		bool m_changed = true;
 		std::unique_ptr<class Text> m_text;

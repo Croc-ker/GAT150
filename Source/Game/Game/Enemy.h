@@ -21,7 +21,7 @@ namespace kiko
 		bool Initialize() override;
 
 		void Update(float dt) override;
-		void OnCollision(Actor* other) override;
+		void OnCollisionEnter(Actor* other) override;
 
 		bool GetFacingPlayer() const { return m_facingPlayer; }
 		void SetFacingPlayer(bool facingPlayer) { m_facingPlayer = facingPlayer; }

@@ -3,6 +3,7 @@
 #include <Core/Math/Vector2.h>
 #include "box2d/include/box2d/b2_world.h"
 #include <box2d/include/box2d/box2d.h>
+#include "ContactListener.h"
 #include <memory>
 
 #define VEC2_TO_B2VEC2(vec) (*(b2Vec2*)(&vec))
@@ -50,5 +51,7 @@ namespace kiko
 	private:
 		float m_pixelsPerUnit = 48.0f;
 		std::unique_ptr<b2World> m_world;
+
+		std::unique_ptr<ContactListener> m_contactListener;
 	};
 }

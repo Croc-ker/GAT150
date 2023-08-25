@@ -18,7 +18,7 @@ namespace kiko
 
 		bool Initialize() override;
 		void Update(float dt) override;
-		void OnCollision(Actor* other) override;
+		void OnCollisionEnter(Actor* other) override;
 
 		CLASS_DECLARATION(Player);
 

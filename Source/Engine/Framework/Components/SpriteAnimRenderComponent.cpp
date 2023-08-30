@@ -1,58 +1,68 @@
 #include "SpriteAnimRenderComponent.h"
-#include <Framework/Resource/ResourceManager.h>
+#include "Framework/Resource/ResourceManager.h"
 #include "Renderer/Renderer.h"
 
-namespace kiko
-{
+namespace kiko {
 	CLASS_DEFINITION(SpriteAnimRenderComponent);
 
 	bool SpriteAnimRenderComponent::Initialize()
 	{
 		SpriteComponent::Initialize();
-		SetSequence(defaultSequenceName);
-		UpdateSource();
+
+		SetSequence(defaultSequenceName, false);
+		if (source.w == 0 && source.h == 0) {
+			UpdateSource();
+		}
 		return true;
 	}
 
-	void SpriteAnimRenderComponent::Update(float dt)
+	void kiko::SpriteAnimRenderComponent::Update(float dt)
 	{
 		frameTimer -= dt;
 		if (frameTimer <= 0) {
 			frameTimer = 1.0f / m_sequence->fps;
 			frame++;
-			if (frame > m_sequence->endFrame) frame = (m_sequence->loop) ? m_sequence->startFrame : m_sequence->endFrame;
+			if (frame > m_sequence->endFrame) {
+				frame = (m_sequence->loop) ? m_sequence->startFrame : m_sequence->endFrame;
+			}
 		}
+
+		UpdateSource();
 	}
 
-	void SpriteAnimRenderComponent::SetSequence(const std::string& name)
+	void SpriteAnimRenderComponent::SetSequence(const std::string name, bool Update)
 	{
-		//prevent set sequence again
+		// prevent set sequence again
 		if (m_sequence && m_sequence->name == name) return;
 
-		if (m_sequences.find(name) != m_sequences.end()) {
+		if (m_sequences.find(name) != m_sequences.end())
+		{
 			//set new sequence
 			m_sequence = &m_sequences[name];
 
-			//set texture
+			//set new texture
 			if(m_sequence->texture) m_texture = m_sequence->texture;
-			//reset frame info
+			// reset frame information
 			frame = m_sequence->startFrame;
 			frameTimer = 1.0f / m_sequence->fps;
+
+			if (Update) UpdateSource();
 		}
 	}
 
 	void SpriteAnimRenderComponent::UpdateSource()
 	{
-		vec2 cellSize = m_texture->GetSize() / vec2{m_sequence->numColumns, m_sequence->numRows};
+		vec2 cellSize = m_texture->GetSize() / vec2{ m_sequence->numColumns, m_sequence->numRows };
 		int column = (frame - 1) % m_sequence->numColumns;
 		int row = (frame - 1) / m_sequence->numColumns;
-		source.x = (int)(cellSize.x * column);
-		source.y = (int)(cellSize.y * row);
-		source.w = (int)cellSize.x;
-		source.h = (int)cellSize.y;
+
+		source.x = (int)(column * cellSize.x);
+		source.y = (int)(row * cellSize.y);
+		source.w = (int)(cellSize.x);
+		source.h = (int)(cellSize.y);
 	}
 
-	void SpriteAnimRenderComponent::Read(const json_t& value)
+	void kiko::SpriteAnimRenderComponent::Read(const json_t& value)
 	{
 		SpriteComponent::Read(value);
 
@@ -69,7 +79,6 @@ namespace kiko
 				READ_NAME_DATA(sequenceValue, "numRows", sequence.numRows);
 				READ_NAME_DATA(sequenceValue, "startFrame", sequence.startFrame);
 				READ_NAME_DATA(sequenceValue, "endFrame", sequence.endFrame);
-
 				// read texture
 				std::string textureName;
 				READ_DATA(sequenceValue, textureName);

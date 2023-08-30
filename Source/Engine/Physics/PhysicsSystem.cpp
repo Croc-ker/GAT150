@@ -1,4 +1,6 @@
-#include "PhysicsSystem.h"
+#include "PhysicsSystem.h";
+
+
 namespace kiko
 {
 	bool PhysicsSystem::Initialize()
@@ -7,14 +9,13 @@ namespace kiko
 		m_world = std::make_unique<b2World>(gravity);
 
 		m_contactListener = std::make_unique<ContactListener>();
-
 		m_world->SetContactListener(m_contactListener.get());
 
 		return true;
 	}
 	void PhysicsSystem::Update(float dt)
 	{
-		m_world->Step( 1.0f / 60.0f, 8, 3 );
+		m_world->Step(1.0f / 60.0f, 8, 3);
 	}
 	b2Body* PhysicsSystem::CreateBody(const vec2& position, float angle, const RigidBodyData& data)
 	{
@@ -37,8 +38,20 @@ namespace kiko
 
 	void PhysicsSystem::SetCollisionBox(b2Body* body, const CollisionData& data, class Actor* actor)
 	{
-		b2PolygonShape shape;
 		Vector2 worldSize = ScreenToWorld(data.size * 0.5f);
+		Vector2 worldOffset = ScreenToWorld(data.size * data.offset);
+
+		b2Vec2 vs[4] =
+		{
+			{ -worldSize.x - worldOffset.x, -worldSize.y - worldOffset.y },
+			{  worldSize.x - worldOffset.x, -worldSize.y - worldOffset.y },
+			{  worldSize.x - worldOffset.x,  worldSize.y - worldOffset.y },
+			{ -worldSize.x - worldOffset.x,  worldSize.y + -worldOffset.y },
+		};
+
+		b2PolygonShape shape;
+		shape.Set(vs, 4);
+
 		shape.SetAsBox(worldSize.x, worldSize.y);
 
 		b2FixtureDef fixtureDef;

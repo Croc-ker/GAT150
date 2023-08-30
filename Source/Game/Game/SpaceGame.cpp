@@ -5,7 +5,7 @@
 #include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
 
-#include "../../Audio/AudioSystem.h"
+#include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
 
 
@@ -15,7 +15,7 @@
 bool SpaceGame::Initialize()
 {
 	// create font / text objects
-	m_font = GET_RESOURCE(kiko::Font, "Impact Label.ttf", 24);//std::make_shared<kiko::Font>("BlackHanSans-Regular.ttf", 24);
+	m_font = GET_RESOURCE(kiko::Font, "Impact Label.ttf", 24);//std::make_shared<kiko::Font>("VCR_OSD_MONO.ttf", 24);
 	m_scoreText = std::make_unique<kiko::Text>(GET_RESOURCE(kiko::Font, "Impact Label.ttf", 24));
 	m_scoreText->Create(kiko::g_Renderer, "SCORE: 000", kiko::Color{1, 1, 1, 1});
 
@@ -37,8 +37,15 @@ bool SpaceGame::Initialize()
 	kiko::g_AudioSystem.AddAudio("song", "song.wav");
 
 	m_scene = std::make_unique<kiko::Scene>();
+
 	m_scene->Load("Scenes/SpaceScene.json");
+	{
+		auto titleActor = m_scene->GetActorByName("Title");
+		auto bgActor = m_scene->GetActorByName("Background");
+		auto playerActor = m_scene->GetActorByName("Player");
+	}
 	m_scene->Initialize();
+	
 
 	//add events
 	EVENT_SUBSCRIBE("Addpoints", SpaceGame::AddPoints);
@@ -58,8 +65,6 @@ void SpaceGame::Update(float dt)
 	switch (state)
 	{
 	case SpaceGame::eState::Title:	
-		
-		m_scene->GetActorByName("Title")->active = true;
 
 		if (kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 		{
@@ -85,7 +90,9 @@ void SpaceGame::Update(float dt)
 			//create player
 			auto player = INSTANTIATE(Player, "Player");
 			player->transform = kiko::Transform{ { 400, 300 }, 0, 1 };
-			player->Initialize();
+			{
+				player->Initialize();
+			}
 			m_scene->Add(std::move(player));
 
 		}

@@ -1,7 +1,9 @@
 #pragma once
 #include "SpriteComponent.h"
+
 namespace kiko
 {
+	
 	class SpriteAnimRenderComponent : public SpriteComponent
 	{
 	public:
@@ -20,23 +22,23 @@ namespace kiko
 
 			std::shared_ptr<Texture> texture;
 		};
+
 	public:
 		CLASS_DECLARATION(SpriteAnimRenderComponent);
 
 		bool Initialize() override;
 		void Update(float dt) override;
 
-		void SetSequence(const std::string& name);
+		void SetSequence(const std::string name, bool update = true);
 		void UpdateSource();
 
-	int frame = 0;
-	float frameTimer = 0;
+	public:
+		int frame = 0;
+		float frameTimer = 0;
 
 	private:
 		std::string defaultSequenceName;
 		std::map<std::string, AnimSequence> m_sequences;
 		AnimSequence* m_sequence = nullptr;
 	};
-	
-
 }

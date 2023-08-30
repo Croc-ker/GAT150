@@ -12,14 +12,17 @@ namespace kiko
 	public:
 		CLASS_DECLARATION(Actor)
 
-			Actor() = default;
+		Actor() = default;
 		Actor(const kiko::Transform& transform, std::shared_ptr<Model> model) :
-			transform{ transform }
+		transform{ transform }
 		{}
 		Actor(const kiko::Transform& transform) :
 			transform{ transform }
 		{}
 		Actor(const Actor& other);
+		virtual ~Actor() {
+			OnDestroy();
+		}
 
 		virtual bool Initialize() override;
 		virtual void OnDestroy() override;
@@ -32,8 +35,12 @@ namespace kiko
 		template<typename T>
 		T* GetComponent();
 
+		float GetRadius() { return 30.0f; }
+
 		virtual void OnCollisionEnter(Actor* other) {}
 		virtual void OnCollisionExit(Actor* other) {}
+
+
 
 		float GetLifespan() const { return lifespan; }
 		void SetLifespan(float lifespan) { lifespan = lifespan; }
@@ -52,8 +59,8 @@ namespace kiko
 		float lifespan = -1.0f;
 		bool persistent = false;
 		bool prototype = false;
-		bool destroyed = false;
-
+		bool m_destroyed = false;
+		
 
 		class Game* m_game = nullptr;
 

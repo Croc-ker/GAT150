@@ -16,7 +16,7 @@ namespace kiko
 		float operator [] (size_t index) const { return (&x)[index]; }
 		float& operator [] (size_t index) { return (&x)[index]; }
 
-		Vector2 operator - () { return Vector2(-x, -y); }
+		Vector2 operator - () const { return Vector2(-x, -y); }
 
 		Vector2 operator + (const Vector2& v) const { return Vector2(x + v.x, y + v.y); }
 		Vector2 operator - (const Vector2& v) const { return Vector2(x - v.x, y - v.y); }
@@ -92,9 +92,11 @@ namespace kiko
 
 		return stream;
 	}
-	inline std::ostream& operator<<(std::ostream& os, const Vector2& v) {
-		os << "{ " << v.x << ", " << v.y << " }" << std::endl;
-		return os;
+
+	inline std::ostream& operator<<(std::ostream& stream, const Vector2& v)
+	{
+		stream << v.x << " " << v.y;
+		return stream;
 	}
 
 	using vec2 = Vector2;

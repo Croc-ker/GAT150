@@ -5,25 +5,28 @@ namespace kiko
 {
 	bool Scene::Initialize()
 	{
-		for (auto& actor : actors) actor->Initialize();
+		for (auto &actor : m_actors) actor->Initialize();
 
 		return true;
 	}
 	void Scene::Update(float dt)
 	{
 		//update and destroyed remove actors
-		auto iter = actors.begin();
-		while (iter != actors.end()) {
+
+
+
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end()) {
 			if ((*iter)->active) (*iter)->Update(dt);
-
-
-			((*iter)->destroyed) ? iter = actors.erase(iter) : iter++;
+			
+			
+			((*iter)->m_destroyed) ? iter = m_actors.erase(iter) : iter++;
 		}
 
 		//check collisions
-		for (auto iter1 = actors.begin(); iter1 != actors.end(); iter1++)
+		/*for (auto iter1 = m_actors.begin(); iter1 != m_actors.end(); iter1++)
 		{
-			for (auto iter2 = std::next(iter1, 1); iter2 != actors.end(); iter2++)
+			for (auto iter2 = std::next(iter1,1); iter2 != m_actors.end(); iter2++)
 			{
 				CollisionComponent* collision1 = (*iter1)->GetComponent<CollisionComponent>();
 				CollisionComponent* collision2 = (*iter2)->GetComponent<CollisionComponent>();
@@ -31,31 +34,29 @@ namespace kiko
 				if (collision1 == nullptr || collision2 == nullptr) continue;
 
 				if (collision1->CheckCollision(collision2)) {
-					(*iter1)->OnCollisionEnter(iter2->get());
-					(*iter2)->OnCollisionEnter(iter1->get());
+					(*iter1)->OnCollission(iter2->get());
+					(*iter2)->OnCollission(iter1->get());
 				}
 			}
-		}
+		}*/
 	}
 	void Scene::Draw(Renderer& Renderer)
 	{
-		for (auto& actor : actors) {
-			if (actor->active) {
-				actor->Draw(Renderer);
-			}
+		for (auto& actor : m_actors) {
+			if((actor)->active) actor->Draw(Renderer);
 		}
 	}
 	void Scene::Add(std::unique_ptr<Actor> actor)
 	{
 		actor->m_scene = this;
-		actors.push_back(std::move(actor));
+		m_actors.push_back(std::move(actor));
 	}
-
+	
 	void Scene::RemoveAll(bool forse)
 	{
-		auto iter = actors.begin();
-		while (iter != actors.end()) {
-			(forse || !(*iter)->persistent) ? iter = actors.erase(iter) : iter++;
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end()) {
+			(forse || !(*iter)->persistent) ? iter = m_actors.erase(iter) : iter++;
 		}
 	}
 	bool Scene::Load(const std::string& filename)

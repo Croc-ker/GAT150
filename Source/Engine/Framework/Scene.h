@@ -31,13 +31,13 @@ namespace kiko {
 
 		friend class Scene;
 	private:
-		std::list<std::unique_ptr<Actor>> actors;
+		std::list<std::unique_ptr<Actor>> m_actors;
 	};
 
 	template<typename T>
 	inline T* Scene::GetActor()
 	{
-		for (auto& actor : actors)
+		for (auto& actor : m_actors)
 		{
 			T* result = dynamic_cast<T*>(actor.get());
 			if (result) return result;
@@ -50,7 +50,7 @@ namespace kiko {
 	template<typename T>
 	inline T* Scene::GetActorByName(const std::string& name)
 	{
-		for (auto& actor : actors)
+		for (auto& actor : m_actors)
 		{
 			if (actor->name == name)
 			{

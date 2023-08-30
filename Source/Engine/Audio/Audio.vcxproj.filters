@@ -7,19 +7,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PhysicsSystem.cpp">
+    <ClInclude Include="AudioSystem.h">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ContactListener.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PhysicsSystem.h">
+    <ClCompile Include="AudioSystem.cpp">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="ContactListener.h">
-      <Filter>Source</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

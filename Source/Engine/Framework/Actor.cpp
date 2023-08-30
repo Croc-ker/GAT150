@@ -35,7 +35,7 @@ namespace kiko
 		{
 			component->OnDestroy();
 		}
-
+		
 	}
 
 
@@ -44,10 +44,10 @@ namespace kiko
 		{
 			lifespan -= dt;
 			if (lifespan <= 0) {
-				destroyed = true;
+				m_destroyed = true;
 			}
 		}
-		
+
 		for (auto& component : components)
 		{
 			component->Update(dt);
@@ -96,3 +96,5 @@ namespace kiko
 	}
 
 }
+
+

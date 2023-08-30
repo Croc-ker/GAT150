@@ -4,7 +4,7 @@
 namespace kiko {
 	CLASS_DEFINITION(CircleCollisionComponent)
 
-		void CircleCollisionComponent::Update(float dt)
+	void CircleCollisionComponent::Update(float dt)
 	{
 	}
 
@@ -16,6 +16,7 @@ namespace kiko {
 		return (distance <= radius);
 	}
 
-	void CircleCollisionComponent::Read(const json_t& value) {}
+	void CircleCollisionComponent::Read(const json_t& value){}
 
 }
+

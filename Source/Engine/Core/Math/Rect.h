@@ -1,8 +1,8 @@
 #pragma once
+
 namespace kiko
 {
-	class Rect
-	{
+	class Rect {
 	public:
 		int x, y, w, h;
 	public:

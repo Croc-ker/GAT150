@@ -1,7 +1,6 @@
 #pragma once
 
-namespace kiko
-{
+namespace kiko{
 	template <typename T>
 	class Singleton
 	{
@@ -9,10 +8,13 @@ namespace kiko
 		Singleton(const Singleton& other) = delete;
 		Singleton& operator = (const Singleton& other) = delete;
 
-		static T& Instance() {
+		static T& Instance()
+		{
 			static T instance;
 			return instance;
 		}
+
+
 	protected:
 		Singleton() = default;
 	};

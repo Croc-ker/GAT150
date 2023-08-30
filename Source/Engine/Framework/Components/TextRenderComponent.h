@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderComponent.h"
+#include "Core/Math/Color.h"
 
 namespace kiko
 {
@@ -21,7 +22,8 @@ namespace kiko
 		std::string text;
 		std::string fontName;
 		int fontSize = 0;
-		Color color;
+		Color color{ 1, 1, 1, 1 };
+
 	private:
 		bool m_changed = true;
 		std::unique_ptr<class Text> m_text;

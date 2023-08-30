@@ -3,8 +3,8 @@
 #include "Core/Core.h"
 #include "Renderer/Model.h"
 #include "Input/InputSystem.h"
-#include "../../Physics/PhysicsSystem.h"
-#include "../../Audio/AudioSystem.h"
+#include "Physics/PhysicsSystem.h"
+#include "Audio/AudioSystem.h"
 #include "Core/Time.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -59,10 +59,6 @@ int main(int argc, char* argv[])
 	kiko::MemoryTracker::Initialize();
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
-
-
-	rapidjson::Document document;
-	kiko::Json::Load("json.txt", document);
 
 
 	// Initialize Engine

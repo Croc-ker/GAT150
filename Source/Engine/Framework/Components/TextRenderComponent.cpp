@@ -7,7 +7,7 @@ namespace kiko
 {
 	CLASS_DEFINITION(TextRenderComponent);
 
-
+	
 	TextRenderComponent::TextRenderComponent(const TextRenderComponent& other)
 	{
 		text = other.text;
@@ -56,5 +56,6 @@ namespace kiko
 		READ_DATA(value, fontName);
 		READ_DATA(value, fontSize);
 		READ_DATA(value, color);
+
 	}
 }

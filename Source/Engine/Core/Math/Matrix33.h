@@ -145,7 +145,7 @@ namespace kiko
 		Matrix33 mx = CreateIdentity();
 		float c = cos(radians);
 		float s = sin(radians);
-		
+
 		mx[0][0] = c; mx[0][1] = -s;
 		mx[1][0] = s; mx[1][1] = c;
 

@@ -2,12 +2,11 @@
 #include <string>
 #include <memory>
 
-namespace kiko 
+namespace kiko
 {
 	class Resource
 	{
 	public:
-
 		virtual ~Resource() = default;
 
 		virtual bool Create(std::string filename, ...) = 0;

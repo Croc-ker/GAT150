@@ -13,6 +13,9 @@
     <None Include="..\..\..\Build\Assets\Scenes\Scene.json">
       <Filter>Resources</Filter>
     </None>
+    <None Include="..\..\..\Build\Assets\Scenes\tilemap.json">
+      <Filter>Resources</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,9 +24,21 @@
     <ClCompile Include="Platformer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Platformer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

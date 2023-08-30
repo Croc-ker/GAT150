@@ -11,11 +11,13 @@ namespace kiko
 		virtual void ApplyTorque(float torque) = 0;
 
 		virtual void SetVelocity(const vec2& velocity) { this->velocity = velocity; }
+		virtual void SetGravityScale(float scale) { this->gravityScale = scale; }
 
 	public:
 		vec2 velocity;
-		vec2 acceleration;
-		float mass = 1.0f;
-		float damping = 0;
+		vec2 m_acceleration;
+		float m_mass = 1.0f;
+		float m_damping = 0;
+		float gravityScale;
 	};
 }

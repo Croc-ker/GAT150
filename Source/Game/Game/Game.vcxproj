@@ -171,11 +171,8 @@
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Audio\Audio.vcxproj">
+    <ProjectReference Include="..\..\Engine\Audio\Audio.vcxproj">
       <Project>{51115f32-2f06-4705-bd09-ad54fec07ec0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Physics\Physics.vcxproj">
-      <Project>{05c06947-8c76-44bc-8c0a-fc107c255e4c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Core\Core.vcxproj">
       <Project>{2e09a753-3084-4c98-a6b2-eab18911a2f7}</Project>
@@ -185,6 +182,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Input\Input.vcxproj">
       <Project>{72208cc3-dd65-44ce-a7b6-663e67f1b60e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\Physics\Physics.vcxproj">
+      <Project>{05c06947-8c76-44bc-8c0a-fc107c255e4c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Renderer\Renderer.vcxproj">
       <Project>{72dd305b-79a0-4187-b3db-9d77a9342ba3}</Project>

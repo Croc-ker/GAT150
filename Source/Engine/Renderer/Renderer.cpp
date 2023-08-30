@@ -1,8 +1,8 @@
-#include "Renderer.h">
+#include "Renderer.h"
+#include "Core/Math/Vector2.h"
 #include <SDL2-2.28.0/include/SDL.h>
 #include <SDL2-2.28.0/include/SDL_ttf.h>
 #include <SDL2-2.28.0/include/SDL_image.h>
-#include <Core/Math/Vector2.h>
 
 
 namespace kiko {
@@ -40,7 +40,6 @@ namespace kiko {
 		SDL_RenderClear(m_renderer);
 	}
 
-	
 	void kiko::Renderer::EndFrame()
 	{
 		SDL_RenderPresent(m_renderer);
@@ -74,40 +73,65 @@ namespace kiko {
 	void Renderer::DrawTexture(Texture* texture, float x, float y, float angle)
 	{
 		vec2 size = texture->GetSize();
+
 		SDL_Rect dest;
-		dest.x = x;
-		dest.y = y;
-		dest.w = size.x;
-		dest.h = size.y;
-		// https://wiki.libsdl.org/SDL2/SDL_RenderCopyEx
+		dest.x = (int)(x - (size.x * 0.5f));
+		dest.y = (int)(y - (size.y * 0.5f));
+		dest.w = (int)size.x;
+		dest.h = (int)size.y;
+
 		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, angle, nullptr, SDL_FLIP_NONE);
 	}
-	
-	void Renderer::DrawTexture(Texture* texture, const Transform& transform) {
+
+	void Renderer::DrawTexture(Texture* texture, const Transform& transform)
+	{
 		mat3 mx = transform.GetMatrix();
 
 		vec2 position = mx.GetTranslation();
 		vec2 size = texture->GetSize() * mx.GetScale();
+
 		SDL_Rect dest;
-		dest.x = (int)position.x - (size.x * 0.5f);
-		dest.y = (int)position.x - (size.x * 0.5f);
+		dest.x = (int)(position.x - (size.x * 0.5f));
+		dest.y = (int)(position.y - (size.y * 0.5f));
 		dest.w = (int)size.x;
 		dest.h = (int)size.y;
-		// https://wiki.libsdl.org/SDL2/SDL_RenderCopyEx
+
 		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, RadiansToDegrees(mx.GetRotation()), nullptr, SDL_FLIP_NONE);
 	}
+
 	void Renderer::DrawTexture(Texture* texture, const Rect& source, const Transform& transform)
 	{
 		mat3 mx = transform.GetMatrix();
 
 		vec2 position = mx.GetTranslation();
-		vec2 size = vec2{ source.w,source.h } * mx.GetScale();
+		vec2 size = vec2{ source.w, source.h } *mx.GetScale();
+
 		SDL_Rect dest;
-		dest.x = (int)position.x - (size.x * 0.5f);
-		dest.y = (int)position.x - (size.x * 0.5f);
+		dest.x = (int)(position.x - (size.x * 0.5f));
+		dest.y = (int)(position.y - (size.y * 0.5f));
 		dest.w = (int)size.x;
 		dest.h = (int)size.y;
-		// https://wiki.libsdl.org/SDL2/SDL_RenderCopyEx
+
 		SDL_RenderCopyEx(m_renderer, texture->m_texture, (SDL_Rect*)(&source), &dest, RadiansToDegrees(mx.GetRotation()), nullptr, SDL_FLIP_NONE);
 	}
+
+	void Renderer::DrawTexture(Texture* texture, const Rect& source, const Transform& transform, const vec2& origin, bool flipH)
+	{
+		mat3 mx = transform.GetMatrix();
+
+		vec2 position = mx.GetTranslation();
+		vec2 size = vec2{ source.w, source.h } *mx.GetScale();
+
+		SDL_Rect dest;
+		dest.x = (int)(position.x - (size.x * origin.x));
+		dest.y = (int)(position.y - (size.y * origin.y));
+		dest.w = (int)size.x;
+		dest.h = (int)size.y;
+
+		SDL_Point center{ (int)(size.x * origin.x), (int)(size.y * origin.y) };
+
+		SDL_RenderCopyEx(m_renderer, texture->m_texture, (SDL_Rect*)(&source), &dest, RadiansToDegrees(mx.GetRotation()), &center, (flipH) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+
+	}
+
 }

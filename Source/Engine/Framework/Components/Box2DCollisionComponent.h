@@ -1,6 +1,6 @@
 #pragma once
 #include "CollisionComponent.h"
-#include "../../Physics/PhysicsSystem.h"
+#include "Physics/PhysicsSystem.h"
 #include <functional>
 
 namespace kiko

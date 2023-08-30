@@ -1,5 +1,5 @@
 #pragma once
-#include "Factory.h"
+#include "Framework/Factory.h"
 #include "Core/Json.h"
 #include <string>
 
@@ -19,19 +19,22 @@
 #define CLASS_DEFINITION(classname) \
 	classname::Register register_class;
 
+
 namespace kiko {
 
 	class Object
 	{
 	public:
 		Object() = default;
-		Object(std::string name) : name{ name } {}
+		Object(std::string name) : name{name} {}
 		~Object() { OnDestroy(); }
 
 		CLASS_DECLARATION(Object)
 
 		virtual bool Initialize() { return true; }
 		virtual void OnDestroy() {}
+
+		
 
 	public:
 		std::string name;

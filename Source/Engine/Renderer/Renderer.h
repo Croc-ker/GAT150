@@ -1,12 +1,14 @@
 #pragma once
-#include <string>
-#include <SDL2-2.28.0/include/SDL.h>
-#include "Texture.h"
-#include "Text.h"
 #include "Font.h"
 #include "Model.h"
 #include "Particle.h"
 #include "ParticleSystem.h"
+#include "Text.h"
+#include "Texture.h"
+#include "Core/Math/Rect.h"
+
+#include <SDL2-2.28.0/include/SDL.h>
+#include <string>
 
 namespace kiko
 {
@@ -33,19 +35,21 @@ namespace kiko
 		void DrawPoint(int x, int y);
 		void DrawPoint(float x, float y);
 
-		void DrawTexture(class Texture* texture, float x, float y, float angle = 0.0f);
-		void DrawTexture(Texture* texture, const Transform& transform);
-		void DrawTexture(Texture* texture, const Rect& source, const Transform& transform);
-
 		int GetWidth() const { return m_width; }
 		int GetHeight() const { return m_height; }
+
+		void DrawTexture(class Texture* texture, float x, float y, float angle = 0.0f);
+		void DrawTexture(class Texture* texture, const Transform& transform);
+		void DrawTexture(class Texture* texture, const Rect& source, const Transform& transform);
+		void DrawTexture(class Texture* texture, const Rect& source, const Transform& transform, const vec2& origin, bool flipH);
+
 		friend class Texture;
-	protected:
-		SDL_Renderer* m_renderer = nullptr;
+
 	private:
 		int m_width = 0;
 		int m_height = 0;
 
+		SDL_Renderer* m_renderer = nullptr;
 		SDL_Window* m_window = nullptr;
 	};
 

@@ -2,6 +2,24 @@
 	"actors": [
 		{
 			"type": "Actor",
+			"name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 4,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "Impact Label.ttf",
+					"fontSize": 24,
+					"text": "ASTEROIDZ"
+				}
+			]
+		},
+		{
+			"type": "Actor",
 			"name": "Background",
 			"persistent": true,
 			"transform": {
@@ -74,7 +92,7 @@
 				{
 					"type": "Box2DCollisionComponent",
 					"size": [ 32, 32 ],
-					"isTrigger":  false
+					"isTrigger": false
 				}
 			]
 		},
@@ -104,24 +122,6 @@
 				{
 					"type": "Box2DCollisionComponent",
 					"size": [ 32, 32 ]
-				}
-			]
-		},
-		{
-			"type": "Actor",
-			"name": "Title",
-			"persistent": true,
-			"transform": {
-				"position": [ 400, 300 ],
-				"scale": 4,
-				"rotation": 0
-			},
-			"components": [
-				{
-					"type": "TextRenderComponent",
-					"fontName": "Impact Label.ttf",
-					"fontSize": 24,
-					"text": "ASTEROIDZ"
 				}
 			]
 		}

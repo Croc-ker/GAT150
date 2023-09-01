@@ -13,7 +13,7 @@ namespace kiko {
 			bool Initialize() override;
 
 		void Update(float dt) override;
-		void OnCollisionEnter(Actor* other) override;
+		bool OnCollisionEnter(Actor* other) override;
 		void OnCollisionExit(Actor* other) override;
 
 

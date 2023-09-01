@@ -5,7 +5,8 @@
 #include "Audio/AudioSystem.h"
 #include "Core/Math/MathUtils.h"
 #include "Physics/PhysicsSystem.h"
-
+#include "Core/Random.h"
+#include "Platformer.h"
 #include "Framework/Framework.h"
 
 namespace kiko {
@@ -35,7 +36,7 @@ namespace kiko {
 			dir = 1.0;
 		}
 		//transform.rotation += rotate * m_turnRate * kiko::g_time.GetDeltaTime();
-
+		
 		if (dir) {
 			velocity.x = dir * speed * ((grounded) ? 1 : 1.2) * dt;
 			velocity.x = Clamp(velocity.x, -maxSpeed, maxSpeed);
@@ -43,13 +44,15 @@ namespace kiko {
 			//m_physicsComponent->ApplyForce(forward * speed * dir * ((grounded) ? 1 : 0.25));
 		}
 		//jump
+		kiko::vec2 up = kiko::vec2{ 0,-1 };
 		if (grounded && kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_InputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
-			kiko::vec2 up = kiko::vec2{ 0,-1 };
 			m_physicsComponent->SetVelocity(velocity + (up * jump));
 		}
-
-		m_physicsComponent->SetGravityScale((velocity.y > 0) ? 2 : 1);
-
+		//attack
+		if (kiko::g_InputSystem.GetKeyDown(SDL_SCANCODE_E) && !kiko::g_InputSystem.GetPreviousKeyDown(SDL_SCANCODE_E)) {
+			
+		}
+		//m_physicsComponent->SetGravityScale((velocity.y > 0) ? 0.5 : 1);
 		//animation
 		if (std::fabs(velocity.x) > 0.2f)
 		{
@@ -60,18 +63,28 @@ namespace kiko {
 		{
 			m_spriteComponent->SetSequence("idle");
 		}
-
 	}
-	void Player::OnCollisionEnter(Actor* other)
+	bool Player::OnCollisionEnter(Actor* other)
 	{
-		if (other->tag == "Ground") {
-			grounded = true;
+		bool touchCoin = false;
+		name = other->name;
+		if (other->tag == "Ground" || other->tag == "Water" || other->tag == "Flipper") {
+			grounded = true;			
 		}
+		if (other->tag == "Flipper") {
+			m_physicsComponent->SetGravityScale(m_physicsComponent->gravityScale * -1);
+
+		}
+		if (name == "Coin") {
+			other->m_destroyed = true;
+			touchCoin = true;
+		}
+		return touchCoin;
 	}
 
 	void Player::OnCollisionExit(Actor* other)
 	{
-		if (other->tag == "Ground") {
+		if (other->tag == "Ground" || other->tag == "Sticky") {
 			grounded = false;
 		}
 	}

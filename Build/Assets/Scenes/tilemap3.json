@@ -171,7 +171,37 @@
 				{
 					"type": "Box2DCollisionComponent",
 					"restitution": 0,
-					"isTrigger":  true
+					"isTrigger": true
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "tile06",
+			"tag": "Flipper",
+			"prototype": true,
+			"transform": {
+				"scale": 2
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "platformer/textures/tileset2_32x32.png",
+					"source": [
+						480,
+						448,
+						32,
+						32
+					]
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"isDynamic": false
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"restitution": 0,
+					"isTrigger":  false
 				}
 			]
 		},
@@ -190,17 +220,17 @@
 					"numColumns": 13,
 					"numRows": 10,
 					"size": [ 64, 64 ],
-					"tileNames": [ "", "tile01", "tile02", "tile03", "tile04", "tile05" ],
+					"tileNames": [ "", "tile01", "tile02", "tile03", "tile04", "tile05", "tile06"],
 					"tiles": [
 						4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 						4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
 						4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4,
+						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4,
+						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4,
 						4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-						4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 4,
-						4, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 4,
-						4, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
 						4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
+						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6, 6, 4,
 						4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4
 					]
 				}

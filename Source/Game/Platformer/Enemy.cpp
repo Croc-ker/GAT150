@@ -47,8 +47,9 @@ namespace kiko {
 		}
 	}
 
-	void Enemy::OnCollisionEnter(Actor* other)
+	bool Enemy::OnCollisionEnter(Actor* other)
 	{
+		return false;
 	}
 
 	void Enemy::OnCollisionExit(Actor* other) {

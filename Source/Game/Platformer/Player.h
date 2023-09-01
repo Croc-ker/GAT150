@@ -12,10 +12,9 @@ namespace kiko {
 			bool Initialize() override;
 
 		void Update(float dt) override;
-		void OnCollisionEnter(Actor* other) override;
+		bool OnCollisionEnter(Actor* other) override;
 		void OnCollisionExit(Actor* other) override;
-
-
+		int m_health = 3;
 
 	private:
 		float speed = 0;
@@ -23,7 +22,6 @@ namespace kiko {
 		float jump = 0;
 		bool grounded = false;
 
-		int m_health = 100;
 
 		class PhysicsComponent* m_physicsComponent = nullptr;
 		class SpriteAnimRenderComponent* m_spriteComponent = nullptr;

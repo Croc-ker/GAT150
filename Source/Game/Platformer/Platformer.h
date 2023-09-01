@@ -20,7 +20,6 @@ public:
 
 public:
 
-
 	virtual bool Initialize() override;
 	virtual void Shutdown() override;
 
@@ -30,6 +29,8 @@ public:
 	void SetState(eState state) { m_state = state; }
 	void AddPoints(const kiko::Event& event);
 	void OnPlayerDead(const kiko::Event& event);
+	void RandomizeScene();
+
 private:
 	eState m_state = eState::Title;
 	float m_spawnTimer = 0;

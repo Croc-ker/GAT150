@@ -37,7 +37,12 @@ namespace kiko
 
 		float GetRadius() { return 30.0f; }
 
-		virtual void OnCollisionEnter(Actor* other) {}
+		virtual bool OnCollisionEnter(Actor* other) { 
+			if (other->name == "Coin") {
+				return true;
+			}
+			return false;
+		}
 		virtual void OnCollisionExit(Actor* other) {}
 
 

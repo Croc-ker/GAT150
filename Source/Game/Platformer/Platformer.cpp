@@ -1,35 +1,23 @@
 #include "Platformer.h"
-
+#include "Player.h"
 #include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
 #include "Renderer/ModelManager.h"
 
-
 bool Platformer::Initialize()
 {
 	//load audio
-	//kiko::g_AudioSystem.AddAudio("laser", "laser-gun.wav");
-	//kiko::g_AudioSystem.AddAudio("music", "music.wav");
 
 	m_scene = std::make_unique<kiko::Scene>();
-	m_scene->Load("Scenes/Scene.json");
-	m_scene->Load("Scenes/tilemap.json");
-	m_scene->Initialize();
-
-	/*std::vector<Enemy> enemies;
-	for (int i = 0; i < 5; i++) {
-		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(10.0f, kiko::Pi, kiko::Transform{ {kiko::random(600), kiko::random(600)}, kiko::randomf(kiko::TwoPi), 3 }, kiko::g_manager.Get("ship.txt"));
-		enemy->m_tag = "Enemy";
-		m_scene->Add(move(enemy));
-	}*/
-
+	RandomizeScene();
+	/*m_scene->Load("Scenes/Scene3.json");
+	m_scene->Load("Scenes/tilemap3.json");
+	m_scene->Initialize();*/
 	EVENT_SUBSCRIBE("AddPoints", Platformer::AddPoints);
 	EVENT_SUBSCRIBE("OnPlayerDead", Platformer::OnPlayerDead);
 
-	//kiko::EventManager::Instance().Subscribe("AddPoints", this, std::bind(&Platformer::AddPoints, this, std::placeholders::_1));
-	//kiko::EventManager::Instance().Subscribe("OnPlayerDead", this, std::bind(&Platformer::OnPlayerDead, this, std::placeholders::_1));
 
 	return true;
 }
@@ -44,12 +32,7 @@ void Platformer::Update(float dt)
 	{
 	case Platformer::eState::Title:
 	{
-		/*auto actor = INSTANTIATE(Actor, "Crate");
-		actor->transform.position = { kiko::random(kiko::g_Renderer.GetWidth()),100 };
-		actor->Initialize();
-		m_scene->Add(std::move(actor));*/
 	}
-
 	break;
 	case Platformer::eState::StartGame:
 		m_score = 0;
@@ -58,11 +41,17 @@ void Platformer::Update(float dt)
 		break;
 	case Platformer::eState::StartLevel:
 		m_scene->RemoveAll();
-
 		m_state = eState::Game;
 		break;
 	case Platformer::eState::Game:
-
+	{
+		auto player = m_scene->GetActorByName("Player");
+		auto coin = m_scene->GetActorByName("Coin");
+		if (player->OnCollisionEnter(coin)) {
+			m_state = eState::StartLevel;
+			RandomizeScene();
+		}
+	}
 		break;
 	case Platformer::eState::PlayerDeadStart:
 
@@ -109,3 +98,28 @@ void Platformer::OnPlayerDead(const kiko::Event& event)
 	m_lives--;
 	m_state = eState::PlayerDeadStart;
 }
+
+void Platformer::RandomizeScene()
+{
+	m_scene->RemoveAll();
+	int random = kiko::random(4) + 1;
+	switch (random) {
+	case 1:
+		m_scene->Load("Scenes/Scene.json");
+		m_scene->Load("Scenes/tilemap.json");
+		break;
+	case 2:
+		m_scene->Load("Scenes/Scene2.json");
+		m_scene->Load("Scenes/tilemap2.json");
+		break;
+	case 3:
+		m_scene->Load("Scenes/Scene3.json");
+		m_scene->Load("Scenes/tilemap3.json");
+		break;
+	default:
+		m_scene->Load("Scenes/Scene.json");
+		m_scene->Load("Scenes/tilemap.json");
+	}
+	m_scene->Initialize();
+}
+
